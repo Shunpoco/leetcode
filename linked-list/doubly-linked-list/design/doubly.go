@@ -1,98 +1,117 @@
 package doubly
 
-type LinkedList struct {
-	Head   *ListNode
-	Length int
+type MyLinkedList struct {
+	root   *MyListNode
+	length int
 }
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-	Prev *ListNode
+type MyListNode struct {
+	val  int
+	next *MyListNode
+	prev *MyListNode
 }
 
-func Constructor() *LinkedList {
-	return &LinkedList{nil, 0}
+/** Initialize your data structure here. */
+func Constructor() MyLinkedList {
+	return MyLinkedList{nil, 0}
 }
 
-func (l *LinkedList) AddAtHead(val int) {
-	if l.Head == nil {
-		l.Head = &ListNode{val, nil, nil}
-		l.Length++
-		return
-	}
-	l.Head.Next = &ListNode{val, nil, l.Head}
-	l.Length++
-}
-
-func (l *LinkedList) AddAtTail(val int) {
-	if l.Head == nil {
-		l.Head = &ListNode{val, nil, nil}
-		l.Length++
-		return
-	}
-	cur := l.Head
-	for cur == nil {
-		cur = cur.Next
-	}
-	cur.Next = &ListNode{val, nil, cur}
-	l.Length++
-}
-
-func (l *LinkedList) AddAtIndex(index int, val int) {
-	if index < 0 || index > l.Length {
-		return
-	}
-	if index == 0 {
-		l.AddAtHead(val)
-		return
-	}
-	if index == l.Length-1 {
-		l.AddAtTail(val)
-		return
-	}
-	cur := l.Head
-	for i := 0; i < index; i++ {
-		cur = cur.Next
-	}
-	r := &ListNode{val, cur.Next, cur.Prev}
-	cur.Prev.Next = r
-	cur.Next.Prev = r
-	l.Length++
-}
-
-func (l *LinkedList) DeleteAtIndex(index int) {
-	if index >= l.Length || index < 0 {
-		return
-	}
-
-	if index == 0 {
-		l.Head = l.Head.Next
-		l.Length--
-		return
-	}
-
-	parent := l.Head
-
-	for i := 1; i < index; i++ {
-		parent = parent.Next
-	}
-	cur := parent.Next
-	parent.Next = cur.Next
-	l.Length--
-
-	return
-}
-
-func (l *LinkedList) Get(index int) int {
-	if index >= l.Length || index < 0 {
+/** Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
+func (this *MyLinkedList) Get(index int) int {
+	if index < 0 || index >= this.length {
 		return -1
 	}
-	node := l.Head
+
+	cur := this.root
 	for i := 1; i <= index; i++ {
-		node = node.Next
+		cur = cur.next
 	}
 
-	return node.Val
+	return cur.val
+}
 
+/** Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list. */
+func (this *MyLinkedList) AddAtHead(val int) {
+	if this.length == 0 {
+		this.root = &MyListNode{val, nil, nil}
+		this.length++
+		return
+	}
+
+	n := &MyListNode{val, this.root, nil}
+	this.root.prev = n
+	this.root = n
+	this.length++
+}
+
+/** Append a node of value val to the last element of the linked list. */
+func (this *MyLinkedList) AddAtTail(val int) {
+	if this.length == 0 {
+		this.root = &MyListNode{val, nil, nil}
+		this.length++
+		return
+	}
+
+	cur := this.root
+	for cur.next != nil {
+		cur = cur.next
+	}
+
+	n := &MyListNode{val, nil, nil}
+	cur.next = n
+	n.prev = cur
+	this.length++
+}
+
+/** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
+func (this *MyLinkedList) AddAtIndex(index int, val int) {
+	if index < 0 || index > this.length {
+		return
+	}
+
+	if index == 0 {
+		this.AddAtHead(val)
+		return
+	}
+
+	if index == this.length {
+		this.AddAtTail(val)
+		return
+	}
+
+	cur := this.root
+	for i := 1; i <= index; i++ {
+		cur = cur.next
+	}
+
+	n := &MyListNode{val, nil, nil}
+	cur.prev.next = n
+	n.prev = cur.prev
+	cur.prev = n
+	n.next = cur
+	this.length++
+}
+
+/** Delete the index-th node in the linked list, if the index is valid. */
+func (this *MyLinkedList) DeleteAtIndex(index int) {
+	if index < 0 || index >= this.length {
+		return
+	}
+
+	if index == 0 {
+		this.root = this.root.next
+		this.length--
+		return
+	}
+
+	cur := this.root
+	for i := 1; i <= index; i++ {
+		cur = cur.next
+	}
+
+	cur.prev.next = cur.next
+	if cur.next != nil {
+		cur.next.prev = cur.prev
+	}
+	this.length--
 }

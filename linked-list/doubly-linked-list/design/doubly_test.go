@@ -5,7 +5,7 @@ import "testing"
 func TestLinkedList(t *testing.T) {
 	ll := Constructor()
 
-	if ll.Head != nil || ll.Length != 0 {
+	if ll.root != nil || ll.length != 0 {
 		t.Errorf("Failed to initalize.")
 	}
 
@@ -15,12 +15,12 @@ func TestLinkedList(t *testing.T) {
 
 	want := []int{1, 2, 3}
 
-	n := ll.Head
-	for i := 0; i < ll.Length; i++ {
-		if n.Val != want[i] {
-			t.Errorf("%d != %d", n.Val, want[i])
+	n := ll.root
+	for i := 0; i < ll.length; i++ {
+		if n.val != want[i] {
+			t.Errorf("%d != %d", n.val, want[i])
 		}
-		n = n.Next
+		n = n.next
 	}
 
 	if r := ll.Get(2); r != 3 {

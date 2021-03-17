@@ -1,13 +1,11 @@
 package merge
 
 func merge(nums1 []int, m int, nums2 []int, n int) {
-	inner(&nums1, m, nums2, n)
-}
-
-func inner(nums1 *[]int, m int, nums2 []int, n int) {
-	for _, val := range nums2 {
-		idx := binarySearch(val, (*nums1)[:m], 0)
-		*nums1 = append(append((*nums1)[:idx], val), (*nums1)[idx:]...)
+	for i, val := range nums2 {
+		idx := binarySearch(val, nums1[:m+i], 0)
+		temp := append([]int{}, nums1[idx:]...)
+		nums1[idx] = val
+		nums1 = append(nums1[:idx+1], temp[:len(temp)-1]...)
 	}
 }
 

@@ -24,7 +24,7 @@ func TestInnerMerge(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		if inner(&tc.nums1, tc.m, &tc.nums2, tc.n); !reflect.DeepEqual(tc.nums1, tc.want) {
+		if merge2(&tc.nums1, tc.m, tc.nums2, tc.n); !reflect.DeepEqual(tc.nums1, tc.want) {
 			t.Errorf("inner = %v, expected %v", tc.nums1, tc.want)
 		}
 	}

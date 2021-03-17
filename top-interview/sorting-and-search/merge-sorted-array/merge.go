@@ -23,3 +23,13 @@ func binarySearch(n int, nums []int, start int) int {
 	}
 	return binarySearch(n, nums[mid+1:], start+mid+1)
 }
+
+func merge2(nums1 *[]int, m int, nums2 []int, n int) {
+	for i, val := range nums2 {
+		idx := binarySearch(val, (*nums1)[:m+i], 0)
+		var temp = make([]int, m+n-idx)
+		copy(temp, (*nums1)[idx:])
+		(*nums1)[idx] = val
+		*nums1 = append((*nums1)[:idx+1], temp[:len(temp)-1]...)
+	}
+}

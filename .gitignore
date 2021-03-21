@@ -1,2 +1,3 @@
 *.pyc
 feed.log
+target/

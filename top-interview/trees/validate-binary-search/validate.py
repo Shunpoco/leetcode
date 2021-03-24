@@ -5,34 +5,20 @@ class TreeNode:
         self.right = right
 
 class Solution:
+    MIN = -2 ** 31 -1
+    MAX = 2 ** 31
     def isValidBST(self, root: TreeNode) -> bool:
-        return self._valid(root)[0]
-
-    def _valid(self, root: TreeNode) -> (bool, int, int):
-        '''
-        return (isBST, max, min)
-        '''
-        result = (True, root.val, root.val)
-
-        if root.left is None and root.right is None:
-            return result
-
-        left, right = None, None
-        if root.left is not None:
-            left = self._valid(root.left)
-            
-        if root.right is not None:
-            right = self._valid(root.right)
+        return self._valid(root, self.MAX, self.MIN)
 
 
-        if left is not None:
-            if left[0] == False or left[1] >= root.val:
-                return (False, 0, 0)
-            result = (True, result[1], left[2])
+    def _valid(self, root: TreeNode, maxVal: int, minVal: int) -> bool:
+        if root is None:
+            return True
+
+        if root.val <= minVal or root.val >= maxVal:
+            return False
+
+        return self._valid(root.left, root.val, minVal) and\
+            self._valid(root.right, maxVal, root.val)
         
-        if right is not None:
-            if right[0] == False or right[2] <= root.val:
-                return (False, 0, 0)
-            result = (True, right[1], result[2])
 
-        return result

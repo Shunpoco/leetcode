@@ -8,21 +8,37 @@ class TreeNode:
 
 class Solution:
     def pathSum(self, root: TreeNode, targetSum: int) -> List[List[int]]:
-        return self._paths(root, targetSum, [])
 
-    def _paths(self, root: TreeNode, targetSum: int, l: List[List[int]]) -> List[List[int]]:
-        if root is None:
+        return self._pathSum(root, targetSum, [])
+
+
+    def _pathSum(self, node: TreeNode, target: int, res: List):
+        if node is None:
             return []
 
-        if root.left is None and root.right is None:
-            if targetSum-root.val == 0:
-                return l.append(root.val)
+        target -= node.val
+        res.append(node.val)
+
+        if self._isLeaf(node):
+            if target == 0:
+                return [res]
             return []
 
-        newTS = targetSum - root.val
-        l.append(root.val)
-        lSum = self._paths(root.left, newTS, l)
-        rSum = self._paths(root.right, newTS, l)
+        results = []
+        lefts = self._pathSum(node.left, target, res.copy())
+        rights = self._pathSum(node.right, target, res.copy())
+        if len(lefts) > 0:
+            results.extend(lefts)
+        if len(rights) > 0:
+            results.extend(rights)
 
+        return results
+    
 
-        return lSum.extend(rSum)
+    def _isLeaf(self, node: TreeNode) -> bool:
+        if node is None:
+            return False
+        if node.left is None and node.right is None:
+            return True
+
+        return False

@@ -93,3 +93,49 @@ class Trie:
 # obj.insert(word)
 # param_2 = obj.search(word)
 # param_3 = obj.startsWith(prefix)
+
+# Imlementation in https://leetcode.com/problems/implement-trie-prefix-tree/discuss/58953/AC-Python-solution-using-defaultdict
+
+from collections import defaultdict
+
+class TrieNode:
+    def __init__(self):
+        self.nodes = defaultdict(TrieNode)
+        self.isWord = False
+
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+
+    def insert(self, word):
+        curr = self.root
+
+        for char in word:
+            curr = curr.nodes[char]
+
+        curr.isWord = True
+
+
+    def search(self, word):
+        curr = self.root
+
+        for char in word:
+            if char not in curr.nodes:
+                return False
+            curr = curr.nodes[char]
+
+        return curr.isWord
+
+
+    def startsWith(self, prefix):
+        curr = self.root
+
+        for char in prefix:
+            if char not in curr.nodes:
+                return False
+
+            curr = curr.nodes[char]
+
+        return True

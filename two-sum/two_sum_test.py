@@ -1,6 +1,6 @@
 import unittest
 
-from two_sum import twoSum
+from two_sum import Solution
 
 class TestTwoSum(unittest.TestCase):
   def setUp(self):
@@ -37,10 +37,12 @@ class TestTwoSum(unittest.TestCase):
       },
     ]
 
+    self.s = Solution()
+
   def test_want(self):
     for testCase in self.testCases:
       with self.subTest(testCase=testCase):
-        self.assertEqual(twoSum(testCase['nums'], testCase['target']), testCase['want'])
+        self.assertEqual(self.s.twoSum(testCase['nums'], testCase['target']), testCase['want'])
 
 if __name__ == '__main__':
   unittest.main()

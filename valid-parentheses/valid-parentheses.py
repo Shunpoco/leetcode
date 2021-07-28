@@ -32,3 +32,34 @@ class Solution:
             return False
         
         return True
+
+
+# 2021-07-28
+import queue
+
+class Solution:
+    def isValid(self, s: str) -> bool:
+        combs = {
+            ')': '(',
+            ']': '[',
+            '}': '{',
+        }
+        
+        stack = queue.LifoQueue() # LIFOQueue = Stack
+        
+        for c in s:
+            if c in combs.keys():
+                if stack.empty():
+                    return False
+                v = stack.get()
+                if combs[c] != v:
+                    return False
+                
+            else:
+                stack.put(c)
+                
+                
+        if not stack.empty():
+            return False
+        
+        return True

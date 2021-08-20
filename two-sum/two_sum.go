@@ -25,3 +25,18 @@ func twoSum(nums []int, target int) []int {
 	}
 	return []int{i, j}
 }
+
+// 2021-08-20
+func twoSum(nums []int, target int) []int {
+	h := make(map[int]int)
+
+	for i, v := range nums {
+		j, ok := h[v]
+		if ok {
+			return []int{j, i}
+		}
+		h[target-v] = i
+	}
+
+	return []int{0}
+}

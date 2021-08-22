@@ -43,4 +43,5 @@ fn test_palindrome() {
     assert_eq!(Solution::is_palindrome("A man, a plan, a canal: Panama".to_string()), true);
     assert_eq!(Solution::is_palindrome(" ".to_string()), true);
     assert_eq!(Solution::is_palindrome("race a car".to_string()), false);
+    
 }

@@ -17,6 +17,11 @@ impl ListNode {
 
 struct Solution {}
 
+
+fn main() {
+    println!("{:?}", Solution::add_two_numbers(Some(Box::new(ListNode::new(5))), Some(Box::new(ListNode::new(5)))));
+}
+
 impl Solution {
     pub fn add_two_numbers(l1: Option<Box<ListNode>>, l2: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
         let mut one = l1.unwrap();
@@ -52,25 +57,18 @@ impl Solution {
             }
         }
         
-        root.next        
-        
+        root.next
     }
     
     fn make_node(mut result: i32) -> (ListNode, i32) {
         let single;
-        
         if result > 9 {
             single = 1;
-            result = result - 10;
+            result -= 10;
         } else {
             single = 0;
         }
         
-        
         (ListNode::new(result), single)
     }
-}
-
-fn main() {
-    println!("{:?}", Solution::add_two_numbers(Some(Box::new(ListNode::new(5))), Some(Box::new(ListNode::new(5)))));
 }

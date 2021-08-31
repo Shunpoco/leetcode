@@ -38,14 +38,14 @@ impl Solution {
         while one.next.is_some() || two.next.is_some() {
             match curr {
                 None => break,
-                Some(now) => {
+                Some(now) => {                    
                     one = one.next.or(Some(Box::new(ListNode::new(0)))).unwrap();
                     two = two.next.or(Some(Box::new(ListNode::new(0)))).unwrap();
-                    
+
                     res = Solution::make_node(one.val + two.val + res.1);
-                    
+
                     now.next.get_or_insert(Box::new(res.0));
-                    
+
                     curr = &mut now.next;
                 }
             }
@@ -57,11 +57,12 @@ impl Solution {
             }
         }
         
-        root.next
+        root.next        
     }
     
     fn make_node(mut result: i32) -> (ListNode, i32) {
         let single;
+        
         if result > 9 {
             single = 1;
             result -= 10;

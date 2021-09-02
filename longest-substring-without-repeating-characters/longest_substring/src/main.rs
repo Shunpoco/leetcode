@@ -4,17 +4,17 @@ struct Solution {}
 
 impl Solution {
     pub fn length_of_longest_substring(s: String) -> i32 {
-        let chars: Vec<char> = s.chars().collect();
+        let char_s: Vec<char> = s.chars().collect();
         
         let mut left = 0usize;
         
-        let mut h: HashMap<char, usize> = HashMap::new();
-        
         let mut result = 0usize;
         
-        for right in 0..chars.len() {
-            let c = chars[right];
-
+        let mut h: HashMap<char, usize> = HashMap::new();
+        
+        for right in 0..char_s.len() {
+            let c = char_s[right];
+            
             match h.get(&c) {
                 None => (),
                 Some(v) => {
@@ -23,18 +23,16 @@ impl Solution {
                     }
                 }
             }
-
             h.insert(c, right);
             
             if right + 1 - left > result {
                 result = right + 1 - left;
-            }            
+            }
         }
         
         result as i32
     }
 }
-
 
 fn main() {
     assert_eq!(Solution::length_of_longest_substring("abcadf".to_string()), 5);

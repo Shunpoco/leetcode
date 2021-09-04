@@ -2,29 +2,30 @@ struct Solution {}
 
 impl Solution {
     pub fn is_palindrome(x: i32) -> bool {
-        if x < 0 || (x != 0 && x % 10 == 0){
+        if x < 0 || (x > 0 && x % 10 == 0){
             return false;
         }
         
-        let mut rev = 0i32;
         let mut mx = x;
+        let mut rev = 0i32;
         
         while mx > 0 {
             match rev.checked_mul(10) {
-                Some(v) => rev = v,
                 None => return false,
+                Some(v) => rev = v,
             }
+            
             match rev.checked_add(mx%10) {
-                Some(v) => rev = v,
                 None => return false,
+                Some(v) => rev = v,
             }
-            mx = mx / 10;            
+            
+            mx = mx / 10;
         }
-        
-        x == rev
+
+        rev == x
     }
 }
-
 
 fn main() {
     println!("{}", Solution::is_palindrome(121));

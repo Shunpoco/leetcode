@@ -17,24 +17,25 @@ struct Solution{}
 //     }
 // }
 
-// 2021-08-25
+// 2021-09-06
 impl Solution {
     pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
+        
         let mut h: HashMap<i32, i32> = HashMap::new();
         
         for i in 0..nums.len() {
-            match h.get(&nums[i]) {
+            let v = nums[i];
+            match h.get(&v) {
+                Some(val) => return vec![*val, i as i32],
                 None => {
-                    h.insert(target - nums[i], i as i32);
-                },
-                Some(v) => return vec![*v, i as i32]
+                    h.insert(target-v, (i as i32));
+                }
             }
         }
         
         vec![]
     }
 }
-
 
 fn main() {
     Solution::two_sum(vec![3,3], 6);

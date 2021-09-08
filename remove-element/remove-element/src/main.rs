@@ -5,8 +5,10 @@ impl Solution {
         if nums.len() == 0 {
             return 0i32;
         }
-        let mut left = 0usize;        
-        let mut right = nums.len();
+        
+        let mut left = 0usize;
+        let mut right = nums.len() as usize;
+        
         
         while left < right {
             let v = nums[left];
@@ -19,7 +21,7 @@ impl Solution {
             }
         }
         
-        right as i32     
+        left as i32
     }
 }
 

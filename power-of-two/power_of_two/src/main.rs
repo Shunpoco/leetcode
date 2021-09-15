@@ -10,7 +10,6 @@ impl Solution {
         let char_vec: Vec<char> = s.chars().collect();
         
         let mut one_count = 0usize;
-        
         for c in char_vec {
             if c == '1' {
                 one_count += 1;

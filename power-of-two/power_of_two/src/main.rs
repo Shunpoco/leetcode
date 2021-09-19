@@ -24,29 +24,21 @@ struct Solution {}
 // use bit manipulation
 impl Solution {
     pub fn is_power_of_two(n: i32) -> bool {
-        if n <= 0 {
-            return false;
-        }
+        if n <= 0 { return false; }
         
         let mut n = n;
-        
-        let mut one_count = 0usize;
+        let mut count_one = 0usize;
         
         while n > 0 {
             if n & 1 == 1 {
-                one_count += 1;
-            }
-            
-            if one_count > 1 {
-                return false;
+                count_one += 1;
+                if count_one > 1 { return false; }         
             }
             n = n >> 1;
         }
-        
         true
     }
 }
-
 
 fn main() {
     println!("{:?}", Solution::is_power_of_two(2));

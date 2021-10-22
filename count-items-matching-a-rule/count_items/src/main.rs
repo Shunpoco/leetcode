@@ -17,6 +17,7 @@ impl Solution {
             if item[key] == rule_value {
                 result += 1;
             }
+            
         }
         
         result

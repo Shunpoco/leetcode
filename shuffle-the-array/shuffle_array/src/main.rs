@@ -23,4 +23,3 @@ impl Solution {
 fn main() {
     println!("{:?}", Solution::shuffle(vec![1,2,3,1,2,3], 3));
 }
- 

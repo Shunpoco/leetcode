@@ -22,3 +22,4 @@ impl Solution {
 fn main() {
     assert_eq!(Solution::replace_digits("a1c1e1g".to_string()), "abcdefg".to_string())
 }
+

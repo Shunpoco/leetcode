@@ -3,18 +3,20 @@ struct Solution {}
 impl Solution {
     pub fn reverse(x: i32) -> i32 {
         let mut result = 0i32;
-        let mut x2 = x;
-        
-        while x2 != 0 {
+        let mut x = x;
+
+        while x != 0 {
             match result.checked_mul(10) {
+                Some(v) => result = v,
                 None => return 0,
-                Some(v) => result = v
-            }
-            match result.checked_add(x2 % 10) {
+            };
+            
+            match result.checked_add(x % 10) {
+                Some(v) => result = v,
                 None => return 0,
-                Some(v) => result = v
-            }
-            x2 = x2 / 10;
+            };
+            
+            x = x / 10;
         }
         
         result

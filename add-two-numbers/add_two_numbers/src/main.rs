@@ -37,7 +37,7 @@ impl Solution {
         
         while one.next.is_some() || two.next.is_some() {
             match curr {
-                None => break,
+                None => break, // Does not reach this line.
                 Some(now) => {                    
                     one = one.next.or(Some(Box::new(ListNode::new(0)))).unwrap();
                     two = two.next.or(Some(Box::new(ListNode::new(0)))).unwrap();

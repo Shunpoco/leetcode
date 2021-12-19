@@ -1,36 +1,33 @@
 use std::collections::HashMap;
 
 struct Solution {}
-
 impl Solution {
     pub fn length_of_longest_substring(s: String) -> i32 {
-        let char_s: Vec<char> = s.chars().collect();
-        
-        let mut left = 0usize;
-        
-        let mut result = 0usize;
-        
         let mut h: HashMap<char, usize> = HashMap::new();
         
-        for right in 0..char_s.len() {
-            let c = char_s[right];
-            
-            match h.get(&c) {
-                None => (),
+        let s:Vec<char> = s.chars().collect();
+        
+        let mut left = 0usize;
+        let mut result = 0i32;
+        
+        for (i, c) in s.iter().enumerate() {
+            match h.get(c) {
                 Some(v) => {
                     if *v >= left {
                         left = *v + 1;
                     }
-                }
+                },
+                None => (),
             }
-            h.insert(c, right);
+            h.insert(*c, i);
             
-            if right + 1 - left > result {
-                result = right + 1 - left;
+            let l = (i + 1 - left) as i32;
+            if l > result {
+                result = l;
             }
         }
         
-        result as i32
+        result
     }
 }
 

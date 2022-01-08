@@ -18,3 +18,4 @@ class Solution:
                         stack.append((temp, level+1))
                         
         return result
+        

@@ -1,49 +1,43 @@
 package main
 
-import "fmt"
-
 type T struct {
-    array []int
-    level int
+	vals  []int
+	level int
 }
-
 
 func permute(nums []int) [][]int {
-    stack := []T {T{array: []int{}, level: 0}}
-    l := len(nums)    
-    result := [][]int{}
-    
-    for len(stack) > 0 {
-        n := len(stack)-1
-        t := stack[n]
-        stack = stack[:n]
-        array := t.array
-        level := t.level
-        
-        for _, num := range nums {
-            if isin(array, num) == false {
-                c := make([]int, len(array))
-                copy(c, array)
-                c = append(c, num)
-                if len(c) == l {
-                    result = append(result, c)
-                } else {
-                    stack = append(stack, T{array: c, level: level+1})
-                }
-            }
-        }
-        
-    }
-    
-    return result
+	L := len(nums)
+	stack := []T{{vals: []int{}, level: 0}}
+	result := [][]int{}
+
+	for len(stack) > 0 {
+		t := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		vals := t.vals
+		level := t.level
+
+		for _, num := range nums {
+			if !isin(vals, num) {
+				var temp = make([]int, len(vals), len(vals)+1)
+				copy(temp, vals)
+				temp = append(temp, num)
+				if len(temp) == L {
+					result = append(result, temp)
+				} else {
+					stack = append(stack, T{vals: temp, level: level + 1})
+				}
+			}
+		}
+	}
+
+	return result
 }
 
-func isin(array []int, target int) bool {
-    for _, num := range array {
-        if target == num {
-            return true
-        }
-    }
-    
-    return false
+func isin(vals []int, target int) bool {
+	for _, val := range vals {
+		if val == target {
+			return true
+		}
+	}
+	return false
 }

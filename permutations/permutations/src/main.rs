@@ -8,7 +8,9 @@ impl Solution {
         for num in &nums {
             *counter.entry(num).or_insert(0) += 1;
         }
-        let mut current = vec![];        
+        let mut current = vec![];
+        let v:Vec<&i32> = counter.keys().cloned().collect();
+        println!("{:?}", v);
         Solution::backtrack(&nums, &mut result, &mut current, &mut counter);
         
         result

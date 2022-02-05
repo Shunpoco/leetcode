@@ -1,20 +1,15 @@
-use std::collections::HashMap;
-
 struct Solution;
 impl Solution {
     pub fn jump(nums: Vec<i32>) -> i32 {
-        let mut hash = HashMap::new();
-        hash.insert(nums.len()-1, 0);
-
-        Solution::dp(0, &nums, &mut hash)
+        let mut memory = vec![-1; nums.len()];
+        memory[nums.len()-1] = 0;
+        
+        Solution::dp(0, &nums, &mut memory)
     }
     
-    fn dp(current: usize, nums: &Vec<i32>, hash: &mut HashMap<usize, i32>) -> i32 {
-        match hash.get(&current) {
-            Some(v) => {
-                return *v;
-            },
-            None => {},
+    fn dp(current: usize, nums: &Vec<i32>, memory: &mut Vec<i32>) -> i32 {
+        if memory[current] >= 0 {
+            return memory[current];
         }
         
         let num = nums[current];
@@ -24,13 +19,13 @@ impl Solution {
             if next >= nums.len() {
                 break;
             }
-            let v = 1 + Solution::dp(current+i as usize, nums, hash);
+            let v = 1 + Solution::dp(current+i as usize, nums, memory);
             if steps > v {
                 steps = v;
             }                
         }
         
-        hash.insert(current, steps);
+        memory[current] = steps;
         
         steps
     }

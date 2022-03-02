@@ -2,18 +2,26 @@ struct Solution;
 impl Solution {
     pub fn reverse_vowels(s: String) -> String {
         let mut s:Vec<char> = s.chars().collect();
-        let mut idxs = vec![];
-        let mut vowels = vec![];
-        for (i, &c) in s.iter().enumerate() {
-            if Self.isVowel(c) {
-                idxs.push(i);
-                vowels.push(c);
+        let mut left = 0usize;
+        let mut right = s.len()-1;
+        
+        while left < right {
+            if Self.isVowel(s[left]) && Self.isVowel(s[right]) {
+                let temp = s[left];
+                s[left] = s[right];
+                s[right] = temp;
+                left += 1;
+                right -= 1;
+            } else {
+                if !Self.isVowel(s[left]) {
+                    left += 1;
+                }
+                if !Self.isVowel(s[right]) {
+                    right -= 1;
+                }                
             }
         }
-        
-        for (i, &c) in vowels.iter().rev().enumerate() {
-            s[idxs[i]] = c;
-        }
+
         
         s.iter().collect()
     }

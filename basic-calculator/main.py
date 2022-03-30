@@ -11,29 +11,17 @@ class Solution:
                 while s[idx:idx+t].isdigit() and idx+t <= len(s):
                     t += 1                
                 self.stack.append(s[idx:idx+(t-1)])
-                idx += t-1
+                idx += t-2
                 
-            elif s[idx] == "(":
-                self.stack.append(s[idx])
-                idx += 1
-
             elif s[idx] == ")":
                 while self.stack[len(self.stack)-1] != "(":
                     self.rev_stack.append(self.stack.pop())
                 self.stack.pop()
                 self.calc()
-                
-                idx += 1
             
-            elif s[idx] == "+":
+            elif s[idx] in ["(", "+", "-"]:
                 self.stack.append(s[idx])
-                idx += 1
-            elif s[idx] == "-":
-                self.stack.append(s[idx])
-                idx += 1
-                
-            else:
-                idx += 1
+            idx += 1
          
         # print(self.stack)
         while len(self.stack) > 0:

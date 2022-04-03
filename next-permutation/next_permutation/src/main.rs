@@ -5,22 +5,15 @@ impl Solution {
             return;
         }
         
-        let min = nums.len()-1;
         let mut max = nums.len()-1;
         let mut i = nums.len()-2;
         let mut swap = false;
         
         loop {
-            if nums[min] > nums[i] {
-                let t = nums[min];
-                nums[min] = nums[i];
-                nums[i] = t;
-                swap = true;
-                break;
-            } else if nums[max] > nums[i] {
+            if nums[max] > nums[i] {
                 let v = &mut nums[max..];
                 v.sort();
-                for j in max..(min+1) {
+                for j in max..nums.len() {
                     if nums[j] > nums[i] {
                         let t = nums[j];
                         nums[j] = nums[i];
@@ -32,12 +25,9 @@ impl Solution {
                 println!("{:?}", nums);
                 break;
             }
-
-            
             if nums[i] > nums[max] {
                 max = i;
             }
-            
             if i > 0 {
                 i -= 1;            
             } else {

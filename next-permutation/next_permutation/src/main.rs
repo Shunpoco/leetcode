@@ -1,47 +1,40 @@
 struct Solution;
 impl Solution {
     pub fn next_permutation(nums: &mut Vec<i32>) {
-        if nums.len() < 2 {
+        if nums.len() == 1 {
             return;
         }
         
         let mut max = nums.len()-1;
-        let mut i = nums.len()-2;
+        let mut idx = nums.len()-1;
         let mut swap = false;
         
-        loop {
-            if nums[max] > nums[i] {
-                let v = &mut nums[max..];
+        while idx > 0 {
+            idx -= 1;
+            
+            if nums[max] > nums[idx] {
+                let v = &mut nums[idx+1..];
                 v.sort();
-                for j in max..nums.len() {
-                    if nums[j] > nums[i] {
-                        let t = nums[j];
-                        nums[j] = nums[i];
-                        nums[i] = t;
+                for i in idx+1..nums.len() {
+                    if nums[i] > nums[idx] {
+                        let temp = nums[i];
+                        nums[i] = nums[idx];
+                        nums[idx] = temp;
+                        swap = true;
                         break;
                     }
-                }
-                swap = true;
-                println!("{:?}", nums);
+                }            
                 break;
             }
-            if nums[i] > nums[max] {
-                max = i;
-            }
-            if i > 0 {
-                i -= 1;            
-            } else {
-                break;
+            
+            if nums[max] < nums[idx] {
+                max = idx;
             }
         }
-    
-        let v: &mut [i32];
-        if swap {
-            v = &mut nums[i+1..];
-        } else {
-            v = &mut nums[..];
+        
+        if !swap {
+            nums.sort();
         }
-        v.sort();
     }
 }
 

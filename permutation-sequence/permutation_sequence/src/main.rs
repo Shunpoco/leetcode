@@ -4,7 +4,7 @@ impl Solution {
         let mut visit = vec![true;n as usize];
         let mut digits = vec![];
         let mut v = 1i32;
-        let mut result = vec![];
+        let mut result = "".to_string();
         for i in 1..n {
             v *= i;
             digits.push(v);
@@ -22,7 +22,8 @@ impl Solution {
                     count += 1;
                 }
                 if count == c {
-                    result.push((idx+1) as i32);
+                    // result.push((idx+1) as i32);
+                    result = format!("{}{}", result, (idx+1));
                     visit[idx] = false;
                 }
                 idx += 1;
@@ -33,14 +34,16 @@ impl Solution {
         
         for (i, &v) in visit.iter().enumerate() {
             if v {
-                result.push(i as i32+1);
+                result = format!("{}{}", result, (i+1));
+                // result.push(i as i32+1);
                 break;
             }
         }
         
         // println!("{:?}", result);
         // println!("{:?}", visit);
-        result.into_iter().map(|x| x.to_string()).collect::<String>()
+        result
+        // result.into_iter().map(|x| x.to_string()).collect::<String>()
     }
 }
 

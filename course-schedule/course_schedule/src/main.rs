@@ -1,46 +1,40 @@
-use std::collections::VecDeque;
-
 struct Solution;
 impl Solution {
     pub fn can_finish(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> bool {
-        let _len_pres: usize = prerequisites.len();
-        let (graph, mut indegrees) = Self::build_graph(num_courses as usize, &prerequisites);
-        let mut queue: VecDeque<usize> = VecDeque::new();
+        let (graph, mut indegrees) = Self.build_graph(num_courses as usize, &prerequisites);
+        let mut stack = vec![];
         
-        for (idx, &degree) in indegrees.iter().enumerate() {
+        // prevent infinity loop
+        for (i, &degree) in indegrees.iter().enumerate() {
             if degree == 0 {
-                queue.push_back(idx);
+                stack.push(i);
             }
         }
         
-        let mut cnt = 0;
-        while let Some(cur) = queue.pop_front() {
+        let mut cnt = 0i32;
+        
+        while let Some(v) = stack.pop() {
             cnt += 1;
-            if let Some(nxts) = graph.get(cur) {
-                for &nxt in nxts {
-                    indegrees[nxt] -= 1;
-                    if indegrees[nxt] == 0 {
-                        queue.push_back(nxt);
-                    }
+            for &p in &graph[v] {
+                indegrees[p] -= 1;
+                if indegrees[p] == 0 {
+                    stack.push(p);
                 }
-            };
+            }
         }
         
-        println!("{}, {:?}", cnt, indegrees);
         cnt == num_courses
     }
     
-    fn build_graph(n: usize, pres: &Vec<Vec<i32>>) -> (Vec<Vec<usize>>, Vec<i32>) {
-        let mut graph: Vec<Vec<usize>> = vec![vec![];n];
-        let mut indegrees: Vec<i32> = vec![0;n];
+    fn build_graph(self, n: usize, pre: &Vec<Vec<i32>>) -> (Vec<Vec<usize>>, Vec<usize>) {
+        let mut graph = vec![vec![];n];
+        let mut indegrees = vec![0;n];
         
-        for edge in pres.iter() {
-            let ready = edge[0];
-            let pre = edge[1];
-            
-            graph[pre as usize].push(ready as usize);
-            indegrees[ready as usize] += 1;
+        for p in pre {
+            graph[p[1] as usize].push(p[0] as usize);
+            indegrees[p[0] as usize] += 1;
         }
+        
         (graph, indegrees)
     }
 }

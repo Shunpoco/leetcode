@@ -1,20 +1,16 @@
 struct Solution;
 impl Solution {
     pub fn product_except_self(nums: Vec<i32>) -> Vec<i32> {
-        let mut result = vec![];
-        
-        let mut v = 1;
-        for &num in nums.iter() {
-            result.push(v);
-            v *= num;
+        let n = nums.len();
+        let mut result = vec![1;n];
+        let mut left = 1i32;
+        let mut right = 1i32;
+        for i in 0..n {
+            result[i] *= left;
+            result[n-1-i] *= right;
+            left *= nums[i];
+            right *= nums[n-1-i];
         }
-        
-        v = 1;
-        for i in 0..nums.len() {
-            result[nums.len()-1-i] *= v;
-            v *= nums[nums.len()-1-i];
-        }
-        
         result
     }
 }

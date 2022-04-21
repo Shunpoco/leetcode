@@ -10,25 +10,25 @@ class Solution:
     def cloneGraph(self, node: 'Node') -> 'Node':
         if node is None:
             return
+
+        memory = {node.val: Node(node.val)}
         
-        memory = {}
-        stack = [(node, None)]
+        stack = [node]
         
         while len(stack) > 0:
-            n, prev = stack.pop()
-            if memory.get(n.val):
-                v = memory[n.val]
-            else:
-                v = Node(n.val)
-                memory[n.val] = v
-            if prev:
-                if v in prev.neighbors:
-                    continue
-                prev.neighbors.append(v)
+            n = stack.pop()
             
-            print(n.val)
+            v = memory[n.val]
+            
             for i in n.neighbors:
-                print(i.val)
-                stack.append((i, v))
+                if memory.get(i.val):
+                    v_ = memory[i.val]
+                    v.neighbors.append(v_)
+                else:
+                    v_ = Node(i.val)
+                    v.neighbors.append(v_)
+                    memory[i.val] = v_
+                    stack.append(i)
                 
+
         return memory[node.val]

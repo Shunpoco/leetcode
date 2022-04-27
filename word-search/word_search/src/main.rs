@@ -43,6 +43,51 @@ impl Solution {
     }
 }
 
+// 2022-04-27
+// impl Solution {
+//     pub fn exist(mut board: Vec<Vec<char>>, word: String) -> bool {
+//         let mut word: Vec<char> = word.chars().collect();
+        
+//         for i in 0..board.len() as i32 {
+//             for j in 0..board[0].len() as i32 {
+//                 if e(i, j, 0, &word, &mut board) {
+//                     return true;
+//                 }
+//             }
+//         }
+        
+//         false
+//     }
+// }
+
+// fn e(i: i32, j: i32, mut idx: usize, word: &Vec<char>, board: &mut Vec<Vec<char>>) -> bool {
+//     if idx == word.len() {
+//         return true;
+//     }
+    
+//     if i < 0 || j < 0 || i == board.len() as i32 || j == board[0].len() as i32 || board[i as usize][j as usize] != word[idx] {
+//         return false;
+//     }
+
+//     let c = board[i as usize][j as usize];
+//     board[i as usize][j as usize] = '!';
+    
+    
+//     for &(di, dj) in vec![(-1, 0), (1, 0), (0, -1), (0, 1)].iter() {
+//         let ni = i + di;
+//         let nj = j + dj;
+//         if e(ni, nj, idx+1, word, board) {
+//             return true;
+//         }
+//     }
+    
+//     board[i as usize][j as usize] = c;
+    
+//     false
+// }
+
+
+
 fn main() {
     assert_eq!(
         Solution::exist(

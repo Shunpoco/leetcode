@@ -40,6 +40,37 @@ struct Solution;
 //     result
 // }
 
+// impl Solution {
+//     pub fn is_interleave(s1: String, s2: String, s3: String) -> bool {
+//         let (l1, l2, l3) = (s1.len(), s2.len(), s3.len());
+//         if l1+l2 != l3 {
+//             return false;
+//         }
+        
+//         let s1: Vec<char> = s1.chars().collect();
+//         let s2: Vec<char> = s2.chars().collect();
+//         let s3: Vec<char> = s3.chars().collect();
+
+//         let mut dp = vec![false;l2+1];
+        
+//         for i in 0..l1+1 {
+//             for j in 0..l2+1 {
+//                 if i == 0 && j == 0 {
+//                     dp[j] = true;
+//                 } else if i == 0 {
+//                     dp[j] = dp[j-1] && s2[j-1] == s3[i+j-1];
+//                 } else if j == 0 {
+//                     dp[j] = dp[j] && s1[i-1] == s3[i+j-1];
+//                 } else {
+//                     dp[j] = (dp[j] && s1[i-1] == s3[i+j-1]) || (dp[j-1] && s2[j-1] == s3[i+j-1]);
+//                 }
+//             }
+//         }
+    
+//         dp[l2]
+//     }
+// }
+
 impl Solution {
     pub fn is_interleave(s1: String, s2: String, s3: String) -> bool {
         let (l1, l2, l3) = (s1.len(), s2.len(), s3.len());
@@ -51,25 +82,26 @@ impl Solution {
         let s2: Vec<char> = s2.chars().collect();
         let s3: Vec<char> = s3.chars().collect();
 
-        let mut dp = vec![false;l2+1];
+        let mut dp = vec![vec![false;l2+1];l1+1];
         
         for i in 0..l1+1 {
             for j in 0..l2+1 {
                 if i == 0 && j == 0 {
-                    dp[j] = true;
+                    dp[i][j] = true;
                 } else if i == 0 {
-                    dp[j] = dp[j-1] && s2[j-1] == s3[i+j-1];
+                    dp[i][j] = dp[i][j-1] && s2[j-1] == s3[i+j-1];
                 } else if j == 0 {
-                    dp[j] = dp[j] && s1[i-1] == s3[i+j-1];
+                    dp[i][j] = dp[i-1][j] && s1[i-1] == s3[i+j-1];
                 } else {
-                    dp[j] = (dp[j] && s1[i-1] == s3[i+j-1]) || (dp[j-1] && s2[j-1] == s3[i+j-1]);
+                    dp[i][j] = (dp[i][j-1] && s2[j-1] == s3[i+j-1]) || (dp[i-1][j] && s1[i-1] == s3[i+j-1]);
                 }
             }
         }
-    
-        dp[l2]
+        
+        dp[l1][l2]
     }
 }
+
 
 fn main() {
     assert_eq!(Solution::is_interleave("aabcc".to_string(), "dbbca".to_string(), "aadbbcbcac".to_string()), true);

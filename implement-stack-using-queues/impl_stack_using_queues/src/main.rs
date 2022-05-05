@@ -4,7 +4,9 @@ struct MyStack {
     q1: VecDeque<i32>,
     q2: VecDeque<i32>,
     top: i32,
+    len: usize,
 }
+
 
 /** 
  * `&self` means the method takes an immutable reference.
@@ -12,50 +14,46 @@ struct MyStack {
  */
 impl MyStack {
 
-    /** Initialize your data structure here. */
     fn new() -> Self {
-        let q1: VecDeque<i32> = VecDeque::new();
-        let q2: VecDeque<i32> = VecDeque::new();
-        let top = 0i32;
-        MyStack{q1, q2, top}
+        MyStack{
+            q1: VecDeque::new(),
+            q2: VecDeque::new(),
+            top: 0,
+            len: 0,
+        }        
     }
     
-    /** Push element x onto stack. */
     fn push(&mut self, x: i32) {
         self.q1.push_back(x);
         self.top = x;
+        self.len += 1;
     }
     
-    /** Removes the element on top of the stack and returns that element. */
     fn pop(&mut self) -> i32 {
-        let result = self.top;
-        for i in 0..self.q1.len()-1 {
-            match self.q1.pop_front() {
-                None => break,
-                Some(v) => {
-                    self.top = v;
-                    self.q2.push_back(v);
-                }
-            }
+        while self.q1.len() > 1 {
+            let v = self.q1.pop_front().unwrap();
+            self.q2.push_back(v);
         }
-        self.q1.pop_front();
-        
-        for i in 0..self.q2.len() {
+        let result = self.q1.pop_front().unwrap();
+        self.top = 0;
+        self.len -= 1;
+        while self.q2.len() > 0 {
             let v = self.q2.pop_front().unwrap();
             self.q1.push_back(v);
+            if self.q2.len() == 0 {
+                self.top = v;
+            }
         }
         
         result
     }
     
-    /** Get the top element. */
     fn top(&self) -> i32 {
         self.top
     }
     
-    /** Returns whether the stack is empty. */
     fn empty(&self) -> bool {
-        self.q1.len() == 0
+        self.len == 0
     }
 }
 

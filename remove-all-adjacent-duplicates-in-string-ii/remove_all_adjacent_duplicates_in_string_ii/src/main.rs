@@ -26,13 +26,8 @@ impl Solution {
                 stack.push((c, 1));
             }
         }
-        
-        let mut result = vec![];
-        for &(c, _) in stack.iter() {
-            result.push(c);
-        }
-        
-        result.iter().collect::<String>()
+   
+        stack.iter().map(|x| x.0).collect::<String>()
     }
 }
 

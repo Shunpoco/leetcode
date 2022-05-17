@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 )
 
 // func generateParenthesis(n int) []string {
@@ -23,33 +22,77 @@ import (
 //     return ans
 // }
 
+// func generateParenthesis(n int) []string {
+// 	ans := []string{}
+
+// 	backTrack(&ans, &[]string{}, n, 0, 0)
+
+// 	return ans
+// }
+
+// func backTrack(ans *[]string, s *[]string, n int, left int, right int) {
+// 	if len(*s) == 2*n {
+// 		*ans = append(*ans, strings.Join((*s)[:], ""))
+// 		return
+// 	}
+
+// 	if left < n {
+// 		*s = append(*s, "(")
+// 		backTrack(ans, s, n, left+1, right)
+// 		*s = (*s)[:len(*s)-1]
+// 	}
+
+// 	if right < left {
+// 		*s = append(*s, ")")
+// 		backTrack(ans, s, n, left, right+1)
+// 		*s = (*s)[:len(*s)-1]
+// 	}
+
+// 	return
+// }
+
 func generateParenthesis(n int) []string {
-	ans := []string{}
+	memory := make(map[int][]string)
+	memory[0] = []string{""}
+	memory[1] = []string{"()"}
+	result := parenthesis(n, &memory)
+	// fmt.Println(memory)
 
-	backTrack(&ans, &[]string{}, n, 0, 0)
-
-	return ans
+	return result
 }
 
-func backTrack(ans *[]string, s *[]string, n int, left int, right int) {
-	if len(*s) == 2*n {
-		*ans = append(*ans, strings.Join((*s)[:], ""))
-		return
+func parenthesis(n int, memory *map[int][]string) []string {
+	if v, prs := (*memory)[n]; prs {
+		return v
 	}
 
-	if left < n {
-		*s = append(*s, "(")
-		backTrack(ans, s, n, left+1, right)
-		*s = (*s)[:len(*s)-1]
+	result := []string{}
+	m := make(map[string]bool)
+
+	for i := 0; i < n; i++ {
+		for j := 0; j < n-i; j++ {
+			k := (n - 1) - i - j
+			ci := parenthesis(i, memory)
+			cj := parenthesis(j, memory)
+			ck := parenthesis(k, memory)
+
+			for _, vi := range ci {
+				for _, vj := range cj {
+					for _, vk := range ck {
+						v := fmt.Sprintf("%s(%s)%s", vi, vj, vk)
+						if _, prs := m[v]; !prs {
+							result = append(result, v)
+							m[v] = true
+						}
+					}
+				}
+			}
+		}
 	}
 
-	if right < left {
-		*s = append(*s, ")")
-		backTrack(ans, s, n, left, right+1)
-		*s = (*s)[:len(*s)-1]
-	}
+	(*memory)[n] = result
 
-	return
+	return result
 }
 
 func main() {

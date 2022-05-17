@@ -2,43 +2,66 @@ package main
 
 func findSubstring(s string, words []string) []int {
 	n := len(words[0])
+	count := len(words)
 	memory := make(map[string]int)
+	result := []int{}
 	for _, word := range words {
 		memory[word] += 1
 	}
-	count := len(words)
-	result := []int{}
 
-	for i := 0; i < len(s)-n+1; i++ {
-		if bt(s, n, i, i, count, &memory) {
-			result = append(result, i)
-		}
+	for i := 0; i < n; i++ {
+		exec(s, n, count, i, &memory, &result)
 	}
 
 	return result
 }
 
-func bt(s string, n int, base int, cur int, count int, memory *map[string]int) bool {
-	if count == 0 {
-		return true
+func exec(s string, n int, count int, pos int, memory *map[string]int, result *[]int) {
+	counter := 0
+
+	left := pos
+	right := left + n
+
+	for right <= len(s) {
+		w := s[right-n : right]
+		c, prs := (*memory)[w]
+		if !prs {
+			for left < right {
+				v := s[left : left+n]
+				if _, prs := (*memory)[v]; prs {
+					(*memory)[v] += 1
+				}
+				left += n
+			}
+			right = left + n
+			counter = 0
+		} else if c == 0 {
+			for (*memory)[w] == 0 {
+				v := s[left : left+n]
+				(*memory)[v] += 1
+				left += n
+				counter -= 1
+			}
+		} else {
+			counter += 1
+			(*memory)[w] -= 1
+			right += n
+		}
+
+		if counter == count {
+			(*result) = append((*result), left)
+			v := s[left : left+n]
+			(*memory)[v] += 1
+			counter -= 1
+			left += n
+		}
 	}
 
-	if cur+n > len(s) {
-		return false
+	for left+n <= len(s) {
+		v := s[left : left+n]
+		if _, prs := (*memory)[v]; prs {
+			(*memory)[v] += 1
+		}
+		left += n
 	}
-
-	v := s[cur : cur+n]
-	if (*memory)[v] == 0 {
-		return false
-	}
-
-	var result bool
-
-	(*memory)[v] -= 1
-	count -= 1
-	result = bt(s, n, base, cur+n, count, memory)
-	count += 1
-	(*memory)[v] += 1
-
-	return result
 }

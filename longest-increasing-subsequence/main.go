@@ -4,7 +4,7 @@ func lengthOfLIS(nums []int) int {
 	dp := []int{}
 
 	for _, num := range nums {
-		i := binary_search(num, dp, 0)
+		i := binary_search(dp, num, 0)
 		if i >= len(dp) {
 			dp = append(dp, num)
 		} else {
@@ -12,24 +12,26 @@ func lengthOfLIS(nums []int) int {
 		}
 	}
 
+	// fmt.Println(dp)
+
 	return len(dp)
 }
 
-func binary_search(num int, nums []int, start int) int {
+func binary_search(nums []int, num int, start int) int {
 	l := len(nums)
 	if l == 0 {
 		return start
 	}
 
 	m := l / 2
+
 	v := nums[m]
 
-	switch {
-	case v > num:
-		return binary_search(num, nums[:m], start)
-	case v < num:
-		return binary_search(num, nums[m+1:], start+m+1)
-	default:
+	if v == num {
 		return m + start
+	} else if v > num {
+		return binary_search(nums[:m], num, start)
+	} else {
+		return binary_search(nums[m+1:], num, start+m+1)
 	}
 }

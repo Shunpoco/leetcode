@@ -1,10 +1,6 @@
 struct Solution;
-
 impl Solution {
-    pub fn divide(dividend: i32, divisor: i32) -> i32 {
-        let mut dividend = dividend;
-        let mut divisor = divisor;
-        
+    pub fn divide(mut dividend: i32, mut divisor: i32) -> i32 {        
         let positive = (dividend < 0) == (divisor < 0);
         let mut result = 0;
         
@@ -42,7 +38,6 @@ impl Solution {
         result
     }
 }
-
 
 fn main() {
     assert_eq!(Solution::divide(10, -3), -3);

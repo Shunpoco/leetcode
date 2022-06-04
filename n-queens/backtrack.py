@@ -1,37 +1,40 @@
 class Solution:
     def solveNQueens(self, n: int) -> List[List[str]]:
-        return self.backtrack(n, 0, [], [])
-        
-    
-    def backtrack(self, n: int, row=0, prev=[], result=[]) -> List[List[str]]:
+        cur = []
         for i in range(n):
-            if self.check(i, prev):
-                prev.append(i)
-                if len(prev) == n:
-                    result.append(self.convert(prev))
-                else:
-                    self.backtrack(n, row+1, prev, result)
-                prev.pop()
-                
-        return result
-    
-    
-    def check(self, col: int, prev: List[int]) -> bool:
+            cur.append(["."]*n)
+
+        res = []
+        self.bt(0, n, cur, res)
         
-        idx = len(prev)
-        for i in range(len(prev)):
-            if col == prev[i] or col-(idx-i) == prev[i] or col+(idx-i) == prev[i]:
+        return res
+        
+        
+    def bt(self, r: int, n: int, cur: List[List[str]], res: List[List[str]])-> bool:
+        if r == n:
+            r = []
+            for item in cur:
+                r.append("".join(item))
+            
+            res.append(r)
+            return True
+        
+        for i in range(n):
+            if self.check(r, i, cur):
+                cur[r][i] = "Q"
+                self.bt(r+1, n, cur, res)
+                cur[r][i] = "."
+                
+        return False
+    
+    def check(self, r: int, c: int, cur: List[List[str]])-> bool:
+        for i in range(r):
+            if cur[i][c] == "Q":
+                return False
+            if c-(r-i) >= 0 and cur[i][c-(r-i)] == "Q":
+                return False
+            if c+(r-i) < len(cur) and cur[i][c+(r-i)] == "Q":
                 return False
             
         return True
-
-
-
-    def convert(self, c: List[int]) -> List[str]:
-        result = []
-        for idx in c:
-            t = ["."]*len(c)
-            t[idx] = "Q"
-            result.append("".join(t))
-            
-        return result
+        

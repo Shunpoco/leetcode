@@ -1,29 +1,28 @@
 package main
 
 func numSquares(n int) int {
-    memory := make(map[int]int)
-    return exec(n, &memory)
+	memory := make([]int, n+1)
+	exec(n, &memory)
+
+	return memory[n]
 }
 
-func exec(n int, memory *map[int]int) int {
-    if n <= 1 {
-        return n
-    }
-    
-    if v, ok := (*memory)[n]; ok {
-        return v
-    }
-    
-    result := n
-    for num := 1; num*num <= n; num++ {
-        t := n/(num*num) 
-        t += exec(n-num*num*t, memory)
-        
-        if t < result {
-            result = t
-        }
-    }
-    
-    (*memory)[n] = result
-    return result
+func exec(n int, memory *[]int) {
+	if n == 0 || (*memory)[n] != 0 {
+		return
+	}
+
+	result := n
+	for num := 1; num*num <= n; num++ {
+		t := n / (num * num)
+		r := n - num*num*t
+		exec(r, memory)
+		t += (*memory)[r]
+
+		if t < result {
+			result = t
+		}
+	}
+
+	(*memory)[n] = result
 }

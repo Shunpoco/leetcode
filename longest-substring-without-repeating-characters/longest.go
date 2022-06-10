@@ -1,24 +1,21 @@
 package longest
 
 func lengthOfLongestSubstring(s string) int {
-	mLen, cLen, sIdx := 0, 0, 0
+	memory := make(map[rune]int)
+	left := 0
+	result := 0
 
-	magic := map[rune]int{}
-
-	for idx, val := range s {
-		if lIdx, ok := magic[val]; ok && lIdx >= sIdx {
-			sIdx = lIdx + 1
-			cLen = idx - lIdx
-		} else {
-			cLen++
+	for right := 0; right < len(s); right++ {
+		r := rune(s[right])
+		if v, ok := memory[r]; ok && v >= left {
+			left = v + 1
 		}
+		memory[r] = right
 
-		if cLen > mLen {
-			mLen = cLen
+		if right-left+1 > result {
+			result = right - left + 1
 		}
-
-		magic[val] = idx
 	}
 
-	return mLen
+	return result
 }

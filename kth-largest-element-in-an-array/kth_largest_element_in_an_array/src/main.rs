@@ -1,9 +1,21 @@
+use std::collections::BinaryHeap;
+
 struct Solution;
 impl Solution {
-    pub fn find_kth_largest(mut nums: Vec<i32>, k: i32) -> i32 {
-        nums.sort_by(|a, b| b.cmp(a));
+    pub fn find_kth_largest(nums: Vec<i32>, k: i32) -> i32 {
+        let mut pq = BinaryHeap::new();
+        for &num in nums.iter() {
+            pq.push(num);
+        }
         
-        nums[(k-1) as usize]
+        let mut count = 0;
+        let mut result = 0;
+        while count < k {
+            result = pq.pop().unwrap();
+            count += 1;
+        }
+        
+        result        
     }
 }
 

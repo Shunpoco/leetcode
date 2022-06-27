@@ -3,13 +3,14 @@ package main
 import "strconv"
 
 func minPartitions(n string) int {
-	result := 0
+	result := "0"
 	for _, num := range n {
-		i, _ := strconv.Atoi(string(num))
+		i := string(num)
 		if i > result {
 			result = i
 		}
 	}
 
-	return result
+	r, _ := strconv.Atoi(result)
+	return r
 }

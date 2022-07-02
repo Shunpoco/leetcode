@@ -6,36 +6,30 @@ func maxArea(h int, w int, hc []int, vc []int) int {
 	sort.Slice(hc, func(i, j int) bool { return hc[i] < hc[j] })
 	sort.Slice(vc, func(i, j int) bool { return vc[i] < vc[j] })
 
-	mh := 0
-	mv := 0
-	for i, num := range hc {
+	mh := hc[0]
+	mv := vc[0]
+	for i := 1; i < len(hc)+1; i++ {
 		var v int
-		if i == 0 {
-			v = num
+		if i == len(hc) {
+			v = h - hc[i-1]
 		} else {
-			v = num - hc[i-1]
+			v = hc[i] - hc[i-1]
 		}
 		if v > mh {
 			mh = v
 		}
 	}
-	if h-hc[len(hc)-1] > mh {
-		mh = h - hc[len(hc)-1]
-	}
 
-	for i, num := range vc {
+	for i := 1; i < len(vc)+1; i++ {
 		var v int
-		if i == 0 {
-			v = num
+		if i == len(vc) {
+			v = w - vc[i-1]
 		} else {
-			v = num - vc[i-1]
+			v = vc[i] - vc[i-1]
 		}
 		if v > mv {
 			mv = v
 		}
-	}
-	if w-vc[len(vc)-1] > mv {
-		mv = w - vc[len(vc)-1]
 	}
 
 	return mh * mv % 1000000007

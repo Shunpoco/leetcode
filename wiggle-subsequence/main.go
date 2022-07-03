@@ -1,45 +1,38 @@
 package main
 
-type Tuple struct {
-	num int
-	val int
-}
-
 func wiggleMaxLength(nums []int) int {
-	n := len(nums)
+	result := []int{}
+	isIncrease := true
 
-	dp0 := Tuple{1, nums[0]}
-	dp1 := Tuple{1, nums[0]}
-
-	for i := 1; i < n; i++ {
-		// dp0 (Increase)
-		var ti Tuple
-		if dp1.val < nums[i] {
-			ti = Tuple{dp1.num + 1, nums[i]}
-		} else if dp0.val < nums[i] {
-			ti = Tuple{dp0.num, nums[i]}
+	for i, num := range nums {
+		if i == 0 {
+			result = append(result, num)
+		} else if len(result) == 1 {
+			if num > result[0] {
+				isIncrease = false
+				result = append(result, num)
+			} else if num < result[0] {
+				isIncrease = true
+				result = append(result, num)
+			}
 		} else {
-			ti = dp0
+			if isIncrease {
+				if num > result[len(result)-1] {
+					isIncrease = false
+					result = append(result, num)
+				} else if num < result[len(result)-1] {
+					result[len(result)-1] = num
+				}
+			} else {
+				if num < result[len(result)-1] {
+					isIncrease = true
+					result = append(result, num)
+				} else if num > result[len(result)-1] {
+					result[len(result)-1] = num
+				}
+			}
 		}
-
-		// dp1 (Decrease)
-		var td Tuple
-		if dp0.val > nums[i] {
-			td = Tuple{dp0.num + 1, nums[i]}
-		} else if dp1.val > nums[i] {
-			td = Tuple{dp1.num, nums[i]}
-		} else {
-			td = dp1
-		}
-
-		dp0 = ti
-		dp1 = td
 	}
 
-	result := dp0.num
-	if dp1.num > result {
-		result = dp1.num
-	}
-
-	return result
+	return len(result)
 }

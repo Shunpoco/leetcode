@@ -1,27 +1,30 @@
 package main
 
-import "sort"
-
 func longestConsecutive(nums []int) int {
-    sort.Slice(nums, func(i, j int) bool { return nums[i] < nums[j] })
-    
-    var result int
-    left := 0
-    skip := 0
-    for right := 0; right < len(nums); right++ {
-        if right != left && nums[right]-1 != nums[right-1] {
-            if nums[right] == nums[right-1] {
-                skip++
-            } else {           
-                left = right
-                skip = 0
-            }
-        }
-        
-        if right-left+1-skip > result {
-            result = right-left+1-skip
-        }
-    }
-    
-    return result
+	memory := make(map[int]bool)
+	for _, num := range nums {
+		memory[num] = true
+	}
+
+	var result int
+	for k, _ := range memory {
+		if _, ok := memory[k-1]; !ok {
+			cur := k
+			t := 1
+			for {
+				if _, ok = memory[cur+1]; ok {
+					cur++
+					t++
+				} else {
+					break
+				}
+			}
+
+			if t > result {
+				result = t
+			}
+		}
+	}
+
+	return result
 }

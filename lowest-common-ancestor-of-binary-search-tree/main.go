@@ -8,23 +8,18 @@ type TreeNode struct {
 }
 
 func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
-	if root.Val == p.Val {
-		return p
+	if p.Val > q.Val {
+		return lowestCommonAncestor(root, q, p)
 	}
-	if root.Val == q.Val {
-		return q
-	}
-	if p.Val < root.Val && q.Val > root.Val || p.Val > root.Val && q.Val < root.Val {
+
+	if p.Val == root.Val || q.Val == root.Val || p.Val < root.Val && q.Val > root.Val {
 		return root
 	}
 
-	var n *TreeNode
-
-	if p.Val < root.Val {
-		n = root.Left
-	} else {
-		n = root.Right
+	if p.Val > root.Val {
+		return lowestCommonAncestor(root.Right, p, q)
 	}
 
-	return lowestCommonAncestor(n, p, q)
+	// q.Val < root.Val
+	return lowestCommonAncestor(root.Left, p, q)
 }

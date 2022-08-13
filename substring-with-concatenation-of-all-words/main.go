@@ -65,3 +65,46 @@ func exec(s string, n int, count int, pos int, memory *map[string]int, result *[
 		left += n
 	}
 }
+
+// 2022/08/13: Using backtrack, but it's much slower than above one.
+
+// func findSubstring(s string, words []string) []int {
+// 	lenS := len(words)
+// 	lenW := len(words[0])
+// 	memory := make(map[string]int)
+// 	for _, word := range words {
+// 			memory[word]++
+// 	}
+
+// 	result := []int{}
+// 	for i := 0; i < lenW; i++ {
+// 			solve(s, i, lenS, lenW, &memory, false, i, &result)
+// 	}
+
+// 	return result
+// }
+
+// func solve(s string, idx, lenS, lenW int, memory *map[string]int, fit bool, start int, result *[]int) {
+// 	if lenS == 0 {
+// 			(*result) = append((*result), start)
+// 			return
+// 	}
+
+// 	if idx+lenW > len(s) {
+// 			return
+// 	}
+
+// 	v := s[idx:idx+lenW]
+
+// 	if (*memory)[v] > 0 {
+// 			(*memory)[v]--
+// 			solve(s, idx+lenW, lenS-1, lenW, memory, true, start, result)
+// 			(*memory)[v]++
+// 	} else if fit {
+// 			return
+// 	}
+
+// 	if !fit {
+// 			solve(s, idx+lenW, lenS, lenW, memory, false, idx+lenW, result)
+// 	}
+// }

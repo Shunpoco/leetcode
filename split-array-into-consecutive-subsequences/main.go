@@ -6,7 +6,7 @@ type Sub struct {
 }
 
 func isPossible(nums []int) bool {
-	subs := []Sub{Sub{1, nums[0]}}
+	subs := []Sub{{1, nums[0]}}
 
 	for _, num := range nums[1:] {
 		l := 100000

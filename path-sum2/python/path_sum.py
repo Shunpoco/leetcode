@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
@@ -7,38 +7,40 @@ class TreeNode:
         self.right = right
 
 class Solution:
-    def pathSum(self, root: TreeNode, targetSum: int) -> List[List[int]]:
-
-        return self._pathSum(root, targetSum, [])
-
-
-    def _pathSum(self, node: TreeNode, target: int, res: List):
-        if node is None:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+        if root is None:
             return []
-
-        target -= node.val
-        res.append(node.val)
-
-        if self._isLeaf(node):
-            if target == 0:
-                return [res]
+        
+        if self.isLeaf(root):
+            if targetSum == root.val:
+                return [[root.val]]
             return []
-
-        results = []
-        lefts = self._pathSum(node.left, target, res.copy())
-        rights = self._pathSum(node.right, target, res.copy())
-        if len(lefts) > 0:
-            results.extend(lefts)
-        if len(rights) > 0:
-            results.extend(rights)
-
-        return results
-    
-
-    def _isLeaf(self, node: TreeNode) -> bool:
-        if node is None:
-            return False
-        if node.left is None and node.right is None:
+        
+        v = targetSum - root.val
+        
+        result = []
+        
+        if root.left is not None:
+            r = self.pathSum(root.left, v)
+            if len(r) > 0:
+                for res in r:
+                    t = [root.val]
+                    t.extend(res)
+                    result.append(t)
+        
+        if root.right is not None:
+            r = self.pathSum(root.right, v)
+            if len(r) > 0:
+                for res in r:
+                    t = [root.val]
+                    t.extend(res)
+                    result.append(t)
+                    
+        return result
+                
+        
+    def isLeaf(self, root: TreeNode):
+        if root.left is None and root.right is None:
             return True
-
         return False
+        

@@ -1,17 +1,16 @@
+from typing import List
+from collections import defaultdict
+
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        h = {}
+        memory = defaultdict(list)
         
         for s in strs:
-            sorted_s = "".join(sorted(s))
-            if h.get(sorted_s):
-                h[sorted_s].append(s)
-            else:
-                h[sorted_s] = [s]
-                
-        result = []
-        
-        for vals in h.values():
-            result.append(vals)
+            v = "".join(sorted(s))
+            memory[v].append(s)
             
-        return result
+        r = []
+        for _, v in memory.items():
+            r.append(v)
+            
+        return r

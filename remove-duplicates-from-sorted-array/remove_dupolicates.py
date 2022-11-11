@@ -1,14 +1,14 @@
 from typing import List
 
 class Solution:
-  def removeDuplicates(self, nums: List[int]) -> int:
-    i = 1
-    while i < len(nums):
-      if nums[i] == nums[i-1]:
-        nums.pop(i)
-        continue
-      i += 1
-      
-    return len(nums)
-
-# see https://leetcode.com/problems/remove-duplicates-from-sorted-array/discuss/984561/Python-beats-98
+    def removeDuplicates(self, nums: List[int]) -> int:
+        r = 0
+        c = -101
+        
+        for num in nums:            
+            if num != c:
+                c = num
+                nums[r] = num
+                r += 1
+        
+        return r

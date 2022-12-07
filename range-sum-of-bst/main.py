@@ -6,14 +6,18 @@
 #         self.right = right
 class Solution:
     def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
-        if root is None:
-            return 0
-        
-        if root.val > high:
-            return self.rangeSumBST(root.left, low, high)
-        
-        elif root.val < low:
-            return self.rangeSumBST(root.right, low, high)
-        
-        
-        return root.val + self.rangeSumBST(root.left, low, high) + self.rangeSumBST(root.right, low, high)
+        q = [root]
+        r = 0
+
+        while len(q) > 0:
+            v = q.pop(0)
+            if low <= v.val and v.val <= high:
+                r += v.val
+            
+            if v.val > low and v.left is not None:
+                q.append(v.left)
+
+            if v.val < high and v.right is not None:
+                q.append(v.right)
+
+        return r

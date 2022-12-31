@@ -24,7 +24,7 @@ class Solution:
 
     def backtrack(self, pos: Tuple[int, int], end: Tuple[int, int], visited: List[List[int]], n: int, m: int) -> int:
         if pos == end:
-            if self.sums(visited) == n*m:
+            if self.isFill(visited, n*m):
                 return 1
             return 0
 
@@ -50,9 +50,9 @@ class Solution:
 
         return result
 
-    def sums(self, visited: List[List[int]]):
+    def isFill(self, visited: List[List[int]], val: int) -> bool:
         r = 0
         for visits in visited:
             r += sum(visits)
 
-        return r
+        return r == val

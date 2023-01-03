@@ -12,7 +12,7 @@ class Solution:
         return result
 
     def isSorted(self, chars: List[str]) -> bool:
-        t = chars.copy()
-        t.sort()
-
-        return chars == t
+        for i in range(1, len(chars)):
+            if chars[i-1] > chars[i]:
+                return False
+        return True

@@ -20,11 +20,10 @@ class Solution:
             return 0
         elif val <= 1:
             return -1
-        result = -1
-        for i in [3, 2]:
-            t = self.executable(val-i)
-            if t != -1 and (result == -1 or result > t+1):
-                result = t+1
-                break
 
-        return result
+        for i in [3, 2]: # Because If it is suitable, consuming three tasks is better than consuming two tasks.
+            t = self.executable(val-i)
+            if t != -1:
+                return t+1
+
+        return -1

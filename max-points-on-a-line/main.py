@@ -2,11 +2,14 @@ from typing import List
 
 class Solution:
     def maxPoints(self, points: List[List[int]]) -> int:
+        if len(points) == 1:
+            return 1
         points.sort()
-        print(points)
-        result = 1
+        result = 2
         for i in range(len(points)-1):
-            for j in range(i+1, len(points)):
+            for j in range(len(points)-1, i+1, -1):
+                if j-i+1 <= result:
+                    break
                 v = self.contains(i, j, points)
                 if v > result:
                     result = v

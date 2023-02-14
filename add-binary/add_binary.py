@@ -1,35 +1,27 @@
 class Solution:
-    def addBinary(self, a: str, b: str)-> str:
-        lenm = max(len(a), len(b))
+    def addBinary(self, a: str, b: str) -> str:
+        carry = "0"
+        l = max(len(a), len(b))
 
-        # fill by 0 if string is shorter than lanm
-        prefa = '0'*(lenm - len(a))
-        a = prefa + a
-        prefb = '0'*(lenm - len(b))
-        b = prefb + b
+        r = ''
+        for i in range(l):
+            a_ = a[len(a)-i-1] if len(a)-i-1 >= 0 else '0'
+            b_ = b[len(b)-i-1] if len(b)-i-1 >= 0 else '0'
 
-        counter = [0] * (lenm + 1)
-        for i in range(lenm):
-            temp = a[lenm-1-i] + b[lenm-1-i]
-            if temp == '00':
-                counter[i] = counter[i] + 0
-            elif temp == '01' or temp == '10':
-                counter[i] = counter[i] + 1
+            if a_ == '1' and b_ == '1' and carry == '1':
+                r = '1' + r
+                carry = '1'
+            elif a_ == '1' and b_ == '1' and carry == '0' or a_ == '1' and b_ == '0' and carry == '1' or a_ == '0' and b_ == '1' and carry == '1':
+                r = '0' + r
+                carry = '1'
+            elif a_ == '1' or b_ == '1' or carry == '1':
+                 r = '1' + r
+                 carry = '0'
             else:
-                counter[i] = counter[i] + 2
+                r = '0' + r
+                carry = '0'
 
-            # fix digits
-            if counter[i] > 1:
-                counter[i+1] = counter[i+1] + 1
-                counter[i] = counter[i] % 2
-        
-        res = ''
-        for i in range(len(counter)):
-            num = str(counter[len(counter)-1-i])
-            if res == '' and num == '0':
-                continue
-            res = res + num
+        if carry == '1':
+            r = '1' + r
 
-        if res == '':
-            res = '0'
-        return res
+        return r

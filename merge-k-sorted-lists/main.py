@@ -1,41 +1,51 @@
-typing import Optional, List
+from typing import List, Optional
+
 # Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        if len(lists) == 0:
-            return
-        if len(lists) == 1:
+        return self.exec(lists)
+
+    def exec(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        n = len(lists)
+
+        if n == 0:
+            return None
+        if n == 1:
             return lists[0]
         
-        h = lists.pop(0)
-        
-        for v in lists:
-            h = self.mergeTwoLists(h, v)
-            
-        return h
-    
-    
-    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        m = n // 2
+
+        a = self.exec(lists[:m])
+        b = self.exec(lists[m:])
+
         head = ListNode(0)
-        cur = head        
-        while list1 and list2:
-            if list1.val < list2.val:
-                cur.next = list1
-                list1 = list1.next
+        cur = head
+
+        while a is not None and b is not None:
+            if a.val < b.val:
+                cur.next = a
+                a = a.next
             else:
-                cur.next = list2
-                list2 = list2.next
-                
+                cur.next = b
+                b = b.next
+
             cur = cur.next
-            
-        if list1:
-            cur.next = list1
-        
-        if list2:
-            cur.next = list2
-            
+
+        while a is not None:
+            cur.next = a
+            a = a.next
+            cur = cur.next
+
+        while b is not None:
+            cur.next = b
+            b = b.next
+            cur = cur.next
+
         return head.next
+
+

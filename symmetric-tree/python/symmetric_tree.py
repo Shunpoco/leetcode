@@ -1,5 +1,5 @@
-from typing import List
-
+from typing import Optional
+# Definition for a binary tree node.
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
@@ -7,34 +7,19 @@ class TreeNode:
         self.right = right
 
 class Solution:
-    def isSymmetric(self, root: TreeNode) -> bool:
-        if root is None:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        if root is None or (root.left is None and root.right is None):
             return True
+        
+        return self.exec(root.left, root.right)
 
-        r = self._toList(root.right, 'r', [])
-        l = self._toList(root.left, 'l', [])
-
-        print(r)
-        print(l)
-
-        if l == r:
+    def exec(self, left: Optional[TreeNode], right: Optional[TreeNode]) -> bool:
+        if left is None and right is None:
             return True
+        if left is None and right is not None or left is not None and right is None:
+            return False
 
-        return False
+        if left.val != right.val:
+            return False
 
-    def _toList(self, node: TreeNode, rotate: str, l: List[int]) -> List[int]:
-        if node is None:
-            l.append(-101)
-            return l
-
-        l.append(node.val)
-
-        if rotate == 'r':
-            l = self._toList(node.right, 'r', l)
-            l = self._toList(node.left, 'l', l)
-
-        if rotate == 'l':
-            l = self._toList(node.left, 'l', l)
-            l = self._toList(node.right, 'r', l)
-
-        return l
+        return self.exec(left.left, right.right) & self.exec(left.right, right.left)

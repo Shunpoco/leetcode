@@ -13,11 +13,7 @@ class Solution:
             return None
 
         rootv = postorder.pop(-1)
-        idx = 0
-        for i, v in enumerate(inorder):
-            if v == rootv:
-                idx = i
-                break            
+        idx = inorder.index(rootv)
 
         root = TreeNode(rootv)
 

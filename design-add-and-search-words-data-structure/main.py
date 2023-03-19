@@ -22,10 +22,17 @@ class WordDictionary:
         def exec(l, w) -> bool:
             if len(w) == 0:
                 return l[1]
-            candidates = [w[0]] if w[0] != '.' else [chr(i+97) for i in range(26)]
-            for c in candidates:
-                if l[0].get(c):
-                    v = exec(l[0][c], w[1:])
+
+            if w[0] != '.':
+                if l[0].get(w[0]) is None:
+                    return False
+                return exec(l[0][w[0]], w[1:])
+                
+            else:
+                candidates = list(l[0].keys())
+                v = False
+                for c in candidates:
+                    v |= exec(l[0][c], w[1:])
                     if v:
                         return v
             return False

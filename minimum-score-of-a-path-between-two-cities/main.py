@@ -11,8 +11,6 @@ class Solution:
         dis[0] = 0
         dis[1] = 99999999999
 
-        print(paths)
-
         q = [1]
         while len(q) > 0:
             v = q.pop(0)
@@ -24,7 +22,4 @@ class Solution:
                     dis[c[0]] = min(d, c[1])
                     q.append(c[0])
 
-        print(dis)
         return dis[n]
-
-

@@ -1,32 +1,20 @@
-from typing import List, Tuple, Dict
+from typing import List
 
 class Solution:
     def minPathSum(self, grid: List[List[int]]) -> int:
-        mem = {}
-        
-        return self.minPath(grid, 0, 0, mem)
-    
-    def minPath(self, grid: List[List[int]], m: int, n: int, mem: Dict[Tuple[int, int], int]) -> int:
-        if mem.get((m, n)) is not None:
-            return mem.get((m, n))
-        
-        lm = len(grid)
-        ln = len(grid[0])
-        
-        if m >= lm or n >= ln:
-            result = inf
-            
-        elif m+1 == lm and n+1 == ln:
-            result = grid[m][n]
-            
-        else:
-            base = grid[m][n]
-            result = base + self.minPath(grid, m+1, n, mem)
-            v2 = base + self.minPath(grid, m, n+1, mem)
-            
-            if v2 < result:
-                result = v2
+        m = len(grid)
+        n = len(grid[0])
 
-        mem[(m, n)] = result
-        
-        return result
+        for r in range(m):
+            for c in range(n):
+                if r == 0 and c == 0:
+                    grid[r][c] = grid[r][c]
+                elif r == 0:
+                    grid[r][c] += grid[r][c-1]
+                elif c == 0:
+                    grid[r][c] += grid[r-1][c]
+                else:
+                    grid[r][c] += min(grid[r-1][c], grid[r][c-1])
+
+        return grid[m-1][n-1]
+ 

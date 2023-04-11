@@ -1,3 +1,5 @@
+from functools import reduce
+
 class Solution:
     def removeStars(self, s: str) -> str:
         n = len(s)
@@ -10,4 +12,6 @@ class Solution:
             else:
                 stack.pop(-1)
 
-        return ''.join(stack)
+        result = reduce(lambda a, b: a+b, stack, '')
+
+        return result

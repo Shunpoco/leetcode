@@ -1,17 +1,23 @@
 struct Solution {}
 
 impl Solution {
-    pub fn add_digits(num: i32) -> i32 {
-        if num < 10 { return num; }
-        
-        let mut num = num;
-        let mut new_num = 0i32;
+    pub fn split(mut num: i32) -> Vec<i32> {
+        let mut result = vec![];
         while num > 0 {
-            new_num += num % 10;
+            result.push(num%10);
             num /= 10;
         }
-        
-        Solution::add_digits(new_num)
+
+        result
+    }
+
+    pub fn add_digits(mut num: i32) -> i32 {
+        while num >= 10 {
+            let digits = Solution::split(num);
+            num = digits.iter().sum::<i32>();
+        }
+
+        num
     }
 }
 

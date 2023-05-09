@@ -1,32 +1,50 @@
+from typing import List
+
 class Solution:
     def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
-        return self.spiral(matrix, [])
-    
-    def spiral(self, matrix: List[List[int]], result: List[int]) -> List[int]:
-        col = len(matrix[0])
-        row = len(matrix)
-        count = 0
-        for i in range(col):
-            result.append(matrix[0][i])
-            count += 1
-        for i in range(1, row):
-            result.append(matrix[i][col-1])
-            count += 1
-        if row > 1:
-            for i in range(col-2, -1, -1):
-                result.append(matrix[row-1][i])
-                count += 1
-        
-        if row > 2 and col > 1:
-            for i in range(row-2, 0, -1):
-                result.append(matrix[i][0])
-                count += 1
-                
-        if count < col * row:
-            next_matrix = []
-            for i in range(1, row-1):
-                next_matrix.append(matrix[i][1:col-1])
-            return self.spiral(next_matrix, result)
-            
+        m = len(matrix)
+        n = len(matrix[0])
+        visited = [[False for _ in range(n+2)] for _ in range(m+2)]
+        for i in range(m+2):
+            for j in range(n+2):
+                if i == 0 or i == m+1 or j == 0 or j == n+1:
+                    visited[i][j] = True
+
+        result = []
+
+        self.exec(0, 0, 'r', matrix, result, m, n, visited)
+
         return result
-        
+
+    def exec(self, row: int, col: int, direction: str, matrix: List[List[int]], result: List[int], m: int, n: int, visited: List[List[bool]]):
+        result.append(matrix[row][col])
+        r, c = row+1, col+1
+        visited[r][c] = True
+
+        if direction == 'r':
+            # right to bottom
+            if visited[r][c+1] and not visited[r+1][c]:
+                self.exec(row+1, col, 'b', matrix, result, m, n, visited)
+            elif not visited[r][c+1]:
+                self.exec(row, col+1, 'r', matrix, result, m, n, visited)
+
+        elif direction == 'b':
+            # bottom to left
+            if visited[r+1][c] and not visited[r][c-1]:
+                self.exec(row, col-1, 'l', matrix, result, m, n, visited)
+            elif not visited[r+1][c]:
+                self.exec(row+1, col, 'b', matrix, result, m, n, visited)
+
+        elif direction == 'l':
+            # left to top
+            if visited[r][c-1] and not visited[r-1][c]:
+                self.exec(row-1, col, 't', matrix, result, m, n, visited)
+            elif not visited[r][c-1]:
+                self.exec(row, col-1, 'l', matrix, result, m, n, visited)
+
+        elif direction == 't':
+            # top to right
+            if visited[r-1][c] and not visited[r][c+1]:
+                self.exec(row, col+1, 'r', matrix, result, m, n, visited)
+            elif not visited[r-1][c]:
+                self.exec(row-1, col, 't', matrix, result, m, n, visited)

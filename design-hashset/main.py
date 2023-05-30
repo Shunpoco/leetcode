@@ -1,19 +1,27 @@
 class MyHashSet:
 
     def __init__(self):
-        self.memory = [0 for _ in range(1000001)]
+        self._size = 1000
+        self.memory = [[] for _ in range(self._size)]
         
+    def _hash(self, val: int) -> int:
+        return val % self._size
 
     def add(self, key: int) -> None:
-        self.memory[key] = 1
+        v = self._hash(key)
+
+        if key not in self.memory[v]:
+            self.memory[v].append(key)
 
     def remove(self, key: int) -> None:
-        self.memory[key] = 0
+        v = self._hash(key)
+        if key in self.memory[v]:
+            self.memory[v].remove(key)
 
     def contains(self, key: int) -> bool:
-        if self.memory[key] == 1:
-            return True
-        return False
+        v = self._hash(key)
+
+        return key in self.memory[v]
 
 
 # Your MyHashSet object will be instantiated and called as such:

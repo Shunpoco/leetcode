@@ -1,33 +1,29 @@
 class Solution:
     def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
-        visit = [];
-        for _ in range(len(grid)):
-            t = [0]*len(grid[0])
-            visit.append(t)
-        visit[0][0] = 1
+        if grid[0][0] == 1 or grid[-1][-1] == 1:
+            return -1
         
         n = len(grid)
+        dx = [-1, 0, 1]
+        dy = [-1, 0, 1]
         
-        queue = [(0, 0)]
+        queue = []
+        queue.append([0, 0, 1])
+        grid[0][0] = 1
         
         while len(queue) > 0:
-            x, y = queue.pop(0)
+            x, y, steps = queue.pop(0)
             
-            if grid[x][y] == 1:
-                visit[x][y] = -1
-                continue
+            if x == n - 1 and y == n - 1:
+                return steps
             
-            for i in [-1, 0, 1]:
-                for j in [-1, 0, 1]:
-                    if x+i >= 0 and x+i < n and y+j >= 0 and y+j < n:
-                        if visit[x+i][y+j] == -1:
-                            continue
-                        if visit[x+i][y+j] == 0 or visit[x+i][y+j] > visit[x][y]+1:
-                            visit[x+i][y+j] = visit[x][y]+1
-                            queue.append((x+i, y+j))
-                            
-        r = visit[n-1][n-1]
+            for i in range(3):
+                for j in range(3):
+                    nx = x + dx[i]
+                    ny = y + dy[j]
+                    
+                    if 0 <= nx < n and 0 <= ny < n and grid[nx][ny] == 0:
+                        queue.append([nx, ny, steps + 1])
+                        grid[nx][ny] = 1
         
-        if r == 0:
-            return -1
-        return r
+        return -1

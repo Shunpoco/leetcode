@@ -2,16 +2,26 @@ package main
 
 import "testing"
 
+type test struct {
+	a     int
+	b     int
+	c     int
+	ideal int
+}
+
 func TestMinFlips(t *testing.T) {
-	a := 2
-	b := 6
-	c := 5
+	tests := []test{
+		{2, 6, 5, 3},
+		{4, 2, 7, 1},
+		{1, 2, 3, 0},
+		{2, 2, 1, 3},
+	}
 
-	ideal := 3
+	for i, test := range tests {
+		actual := minFlips(test.a, test.b, test.c)
 
-	actual := minFlips(a, b, c)
-
-	if actual != ideal {
-		t.Fatalf("minFlips(%d, %d, %d) = %d want match for %d", a, b, c, actual, ideal)
+		if actual != test.ideal {
+			t.Errorf("Test case %d: minFlips(%d, %d, %d) = %d want match for %d", i+1, test.a, test.b, test.c, actual, test.ideal)
+		}
 	}
 }

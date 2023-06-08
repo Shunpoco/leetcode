@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 func countNegatives(grid [][]int) int {
 	m := len(grid)
 	n := len(grid[0])
@@ -20,8 +18,4 @@ func countNegatives(grid [][]int) int {
 	}
 
 	return result
-}
-
-func main() {
-	fmt.Println(countNegatives([][]int{{4, 3, 2, -1}, {3, 2, 1, -1}, {1, 1, -1, -2}, {-1, -1, -2, -3}}))
 }

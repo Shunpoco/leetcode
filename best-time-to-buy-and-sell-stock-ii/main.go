@@ -3,25 +3,28 @@ package main
 func maxProfit(prices []int) int {
 	n := len(prices)
 
-	dp := make([]int, n+1)
+	hold := make([]int, n)
+	free := make([]int, n)
 
-	for i := 1; i <= n; i++ {
-		for j := i; j <= n; j++ {
-			dp[j] = max([]int{dp[i-1] + (prices[j-1] - prices[i-1]), dp[j-1], dp[j]})
-		}
+	hold[0] = -prices[0]
+
+	for i := 1; i < n; i++ {
+		hold[i] = max([]int{
+			hold[i-1],
+			free[i-1] - prices[i],
+		})
+		free[i] = max([]int{
+			free[i-1],
+			hold[i-1] + prices[i],
+		})
 	}
 
-	return dp[n]
+	return free[n-1]
 }
 
 func max(nums []int) int {
-	var result int
-
-	for _, num := range nums {
-		if result < num {
-			result = num
-		}
+	if nums[0] > nums[1] {
+		return nums[0]
 	}
-
-	return result
+	return nums[1]
 }

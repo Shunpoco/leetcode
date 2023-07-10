@@ -6,36 +6,36 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+type qn struct {
+	node  *TreeNode
+	depth int
+}
+
 func minDepth(root *TreeNode) int {
 	if root == nil {
 		return 0
 	}
 
-	return depth(root, 0)
-}
+	queue := make([]qn, 0, 1024)
 
-func depth(node *TreeNode, start int) int {
-	if node == nil {
-		return 1000000
+	queue = append(queue, qn{root, 1})
+
+	for len(queue) > 0 {
+		node := queue[0]
+		queue = queue[1:]
+
+		if node.node.Left == nil && node.node.Right == nil {
+			return node.depth
+		}
+
+		if node.node.Left != nil {
+			queue = append(queue, qn{node.node.Left, node.depth + 1})
+		}
+
+		if node.node.Right != nil {
+			queue = append(queue, qn{node.node.Right, node.depth + 1})
+		}
 	}
 
-	if isLeafNode(node) {
-		return start + 1
-	}
-
-	dL := depth(node.Left, start+1)
-	dR := depth(node.Right, start+1)
-
-	if dL >= dR {
-		return dR
-	}
-	return dL
-}
-
-func isLeafNode(node *TreeNode) bool {
-	if node.Right == nil && node.Left == nil {
-		return true
-	}
-
-	return false
+	return 0
 }

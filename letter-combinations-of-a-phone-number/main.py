@@ -1,29 +1,32 @@
 class Solution:
-    pairs = {
-        "2": "abc",
-        "3": "def",
-        "4": "ghi",
-        "5": "jkl",
-        "6": "mno",
-        "7": "pqrs",
-        "8": "tuv",
-        "9": "wxyz",
-    }
-    
-    
     def letterCombinations(self, digits: str) -> List[str]:
-        if digits == "":
+        n = len(digits)
+        if n == 0:
             return []
 
-        result = [""]
-        
-        for d in digits:
-            pair = self.pairs[d]
-            temp = []
-            for p in pair:
-                for r in result:
-                    temp.append(f"{r}{p}")
-                
-            result = temp
-            
+        map = {
+            "2": ["a", "b", "c"],
+            "3": ["d", "e", "f"],
+            "4": ["g", "h", "i"],
+            "5": ["j", "k", "l"],
+            "6": ["m", "n", "o"],
+            "7": ["p", "q", "r", "s"],
+            "8": ["t", "u", "v"],
+            "9": ["w", "x", "y", "z"],
+        }
+
+        stack = [""]
+        result = []
+        while len(stack) > 0:
+            v = stack.pop(-1)
+
+            if len(v) == n:
+                result.append(v)
+                continue
+
+            c = digits[len(v)]
+
+            for a in map.get(c):
+                stack.append(v+a)
+
         return result

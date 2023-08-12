@@ -1,31 +1,35 @@
 from typing import List, Tuple, Dict
 
 class Solution:
-    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
-        mem = {}
-        
-        return self.paths(obstacleGrid, 0, 0, mem)
-    
-    def paths(self, grid: List[List[int]], m: int, n: int, mem: Dict[Tuple[int, int], int]) -> int:        
-        if mem.get((m, n)) is not None:
-            return mem.get((m, n))
-        
-        lm = len(grid)
-        ln = len(grid[0])
+    def uniquePathsWithObstacles(self, og: List[List[int]]) -> int:
+        m, n = len(og), len(og[0])
 
-        if m >= lm or n >= ln or grid[m][n] == 1:
-            v = 0
-            
-        elif m+1 == lm and n+1 == ln:
-            v = 1
-            
-        else:
-            v1 = self.paths(grid, m+1, n, mem)
-            v2 = self.paths(grid, m, n+1, mem)
-            
-            v = v1 + v2
-            
-            
-        mem[(m, n)] = v
-        
-        return v
+        memo = [[-1 for _ in range(n)] for _ in range(m)]
+
+        self.calc(0, 0, og, memo)
+
+        return memo[0][0]
+
+    def calc(self, row: int, col: int, og: List[List[int]], memo: List[List[int]]):
+        if memo[row][col] >= 0:
+            return
+
+        if og[row][col] == 1:
+            memo[row][col] = 0
+            return
+
+        if row == len(og)-1 and col == len(og[0]) - 1:
+            memo[row][col] = 1
+            return
+
+        r = 0
+
+        if row < len(og)-1:
+            self.calc(row+1, col, og, memo)
+            r += memo[row+1][col]
+
+        if col < len(og[0])-1:
+            self.calc(row, col+1, og, memo)
+            r += memo[row][col+1]
+
+        memo[row][col] = r

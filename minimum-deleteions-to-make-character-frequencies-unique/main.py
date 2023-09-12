@@ -5,20 +5,15 @@ class Solution:
         for c in s:
             counter[ord(c)-97] += 1
 
-        m = max(counter)
+        counter.sort()
 
-        d = defaultdict(int)
-        for v in counter:
-            d[v] += 1
 
         r = 0
+        for i in range(25, 0, -1):
+            for j in range(i-1, -1, -1):
+                if counter[i] == counter[j] and counter[i] != 0:
+                    counter[j] -= 1
+                    r += 1
 
-        for i in range(m, 0, -1):
-            c = d[i]
-            if c > 1:
-                r += c-1
-                d[i] = 1
-                d[i-1] += c-1
-        
         return r
 

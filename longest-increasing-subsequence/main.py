@@ -1,17 +1,15 @@
-from typing import List
-
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
         dp = []
         for num in nums:
-            i = self.binarySearch(num, dp)
-            if i >= len(dp):
+            idx = self.binarySearch(num, dp, 0)
+            if idx == len(dp):
                 dp.append(num)
             else:
-                dp[i] = num
-                
+                dp[idx] = num
+
         return len(dp)
-        
+
         
     def binarySearch(self, num: int, dp: List[int], start=0) -> int:
         l = len(dp)

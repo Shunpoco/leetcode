@@ -6,23 +6,18 @@
 #         self.right = right
 class Solution:
     def maxAncestorDiff(self, root: Optional[TreeNode]) -> int:
-        queue = [(root, -1, -1)]
-        result = -1
+        queue = [(root, root.val, root.val)]
+        result = 0
 
         while len(queue) > 0:
             node, minimum, maximum = queue.pop(0)
-            if minimum == -1 and maximum == -1:
-                minimum = node.val
-                maximum = node.val
-            else:
-                result = max(abs(node.val-minimum), abs(node.val-maximum), result)
-                if minimum > node.val:
-                    minimum = node.val
-                if maximum < node.val:
-                    maximum = node.val
-            if node.left is not None:
-                queue.append((node.left, minimum, maximum))
-            if node.right is not None:
-                queue.append((node.right, minimum, maximum))
+
+            for t in [node.left, node.right]:
+                if t is not None:
+                    diff = max(abs(t.val - minimum), abs(t.val- maximum))
+                    if diff > result:
+                        result = diff
+
+                    queue.append((t, min(t.val, minimum), max(t.val, maximum)))
 
         return result

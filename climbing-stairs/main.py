@@ -1,18 +1,20 @@
 class Solution:
     def climbStairs(self, n: int) -> int:
-        memo = [0]*46
-        memo[0] = 1
+        dp = [0 for _ in range(n+1)]
+        dp[0] = 1
 
-        return self._climb(n, memo)
+        return self.climb(n, dp)
 
-    def _climb(self, n: int, memo: List[int]) -> int:
+    def climb(self, n: int, dp: List[int]) -> int:
+        print(n)
         if n < 0:
             return 0
-        if memo[n] > 0:
-            return memo[n]
 
-        r = self._climb(n-1, memo) + self._climb(n-2, memo)
+        if dp[n] > 0:
+            return dp[n]
 
-        memo[n] = r
+        r = self.climb(n-1, dp) + self.climb(n-2, dp)
+
+        dp[n] = r
 
         return r

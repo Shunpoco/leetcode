@@ -1,38 +1,21 @@
-from typing import List
-
 class Solution:
-    MAX = 100000000000
     def minFallingPathSum(self, matrix: List[List[int]]) -> int:
-        nrow = len(matrix)
-        ncol = len(matrix[0])
-        memory = [[self.MAX for _ in range(ncol)] for _ in range(nrow)]
+        n = len(matrix)
 
-        result = self.MAX
-        for row in range(nrow):
-            t = self.solve(matrix, 0, row, nrow, ncol, memory)
-            if result > t:
-                result = t
-        return result
+        dp = matrix[n-1].copy()
 
-    def solve(self, matrix: List[List[int]], row: int, col: int, nrow: int, ncol: int, memory: List[List[int]]) -> int:
-        if row == nrow:
-            return 0
+        for row in range(n-2, -1, -1):
+            t = [0 for _ in range(n)]
+            for col in range(n):
+                t[col] = matrix[row][col]
+                b = [dp[col]]
+                if col > 0:
+                    b.append(dp[col-1])
+                if col < n-1:
+                    b.append(dp[col+1])
+                
+                t[col] += min(b)
 
-        if memory[row][col] != self.MAX:
-            return memory[row][col]
-        
-        t = self.solve(matrix, row+1, col, nrow, ncol, memory)
+            dp = t
 
-        if col-1 >= 0:
-            t_ = self.solve(matrix, row+1, col-1, nrow, ncol, memory)
-            if t_ < t:
-                t = t_
-        if col+1 < ncol:
-            t_ = self.solve(matrix, row+1, col+1, nrow, ncol, memory)
-            if t_ < t:
-                t = t_
-
-        r = matrix[row][col] + t
-        memory[row][col] = r
-
-        return r
+        return min(dp)

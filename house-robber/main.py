@@ -1,22 +1,26 @@
-from typing import List
-
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        dp = [-1 for _ in range(len(nums))]
-        
-        return self.solve(nums, 0, dp)
+        n = len(nums)
 
+        dp = [-1] * n
 
-    def solve(self, nums: List[int], idx: int, dp: List[int]) -> int:
-        if idx >= len(nums):
+        return self.solve(0, nums, dp)
+
+    def solve(self, i: int, nums: List[int], dp: List[int]) -> 0:
+        if i >= len(nums):
             return 0
 
-        if dp[idx] >= 0:
-            return dp[idx]
+        if dp[i] >= 0:
+            return dp[i]
 
-        r = nums[idx] + self.solve(nums, idx+2, dp)
-        if idx < len(nums)-1:
-            r = max(r, nums[idx+1] + self.solve(nums, idx+3, dp))
-        dp[idx] = r
+
+        r = nums[i] + self.solve(i+2, nums, dp)
+        r2 = self.solve(i+1, nums, dp)
+
+        if r2 > r:
+            r = r2
+
+        dp[i] = r
 
         return r
+

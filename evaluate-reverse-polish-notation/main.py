@@ -1,5 +1,3 @@
-from typing import List
-
 class Solution:
     def evalRPN(self, tokens: List[str]) -> int:
         stack = []
@@ -7,14 +5,15 @@ class Solution:
 
         for token in tokens:
             if token in operations:
-                v1 = stack.pop()
-                v2 = stack.pop()
+                v1 = self.to_num(stack.pop(-1))
+                v2 = self.to_num(stack.pop(-1))
+                t = 0
                 if token == "+":
-                    stack.append(v2+v1)
+                    t = v2 + v1
                 elif token == "-":
-                    stack.append(v2-v1)
+                    t = v2 - v1
                 elif token == "*":
-                    stack.append(v2*v1)
+                    t = v2 * v1
                 else:
                     sing = 1
                     if v1 < 0:
@@ -23,13 +22,17 @@ class Solution:
                     if v2 < 0:
                         sing *= -1
                         v2 *= -1
-                    stack.append(v2//v1 * sing)
+                    t = v2//v1 * sing
+            
+                stack.append(str(t))
+
             else:
-                stack.append(self.toNum(token))
+                stack.append(token)
 
-        return stack[0]            
+        return self.to_num(stack.pop(-1))
 
-    def toNum(self, token: str) -> int:
+
+    def to_num(self, token: str) -> int:
         r = 0
         positive = True
         for t in token:

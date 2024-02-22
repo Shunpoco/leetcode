@@ -1,17 +1,16 @@
-from typing import List
+class Solution(object):
+    def findJudge(self, n, trust):
+        trusting = [0] * (n + 1)
+        trusted = [0] * (n + 1)
 
-class Solution:
-    def findJudge(self, n: int, trust: List[List[int]]) -> int:
-        memo = {}
-        for i in range(1, n+1):
-            memo[i] = 0
+        for t in trust:
+            trusting[t[0]] += 1
+            trusted[t[1]] += 1
 
-        for a, b in trust:
-            memo[b] += 1
-            memo[a] -= 1
+        ans = -1
 
-        for k, v in memo.items():
-            if v == n-1:
-                return k
+        for i in range(1, n + 1):
+            if trusting[i] == 0 and trusted[i] == n - 1:
+                ans = i
 
-        return -1
+        return ans

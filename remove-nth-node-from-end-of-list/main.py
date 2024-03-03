@@ -1,38 +1,25 @@
-from typing import Optional
-
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
-
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
 class Solution:
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
-        n_nodes = self.get_nodes(head)
-        
-        h = ListNode(val=-1, next=head)
-        cur = h
-        i = 0
-        target = n_nodes - n
-        
-        while True:
-            if i == target:
-                # nextがremoveすべきnode
-                next_node = cur.next
-                nn_node = next_node.next    
-                cur.next = nn_node
-                break
-            i += 1
-            cur = cur.next
-            
-        return h.next
-        
-        
-    def get_nodes(self, head: Optional[ListNode]) -> int:
-        n = 0
-        
-        while head:
-            n += 1
-            head = head.next
-            
-        return n
+        stack = []
+
+        next = head
+
+        while next is not None:
+            stack.append(next)
+            next = next.next
+
+        b = None
+        for i in range(len(stack)-1, -1, -1):
+            n -= 1
+            if n == 0:
+                continue
+            v = stack[i]
+            v.next = b
+            b = v
+
+        return b

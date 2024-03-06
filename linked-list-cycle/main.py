@@ -6,22 +6,22 @@
 
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
-        if head is None:
-            return False
-        
-        i1, i2 = head, head.next
-        if i2 is None:
-            return False
+        one = head
+        two = head
 
-        while i1 != i2:
-            i1 = i1.next
-            i2 = i2.next
-            if i1 is None or i2 is None:
-                return False
-            i2 = i2.next
+        while one is not None and two is not None:
+            one = one.next
+            if one is None:
+                break
 
-            if i2 is None:
-                return False
+            two = two.next
+            if two is None:
+                break
 
-        return True
+            two = two.next
+            if two is None:
+                break
+            elif one == two:
+                return True
 
+        return False

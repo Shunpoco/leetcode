@@ -1,24 +1,34 @@
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
-class Solution:
-    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        if head is None:
-            return None
-        l = 0
-        cur = head
-        while cur is not None:
-            l += 1
-            cur = cur.next
-            
-        m = l // 2
+// Definition for singly-linked list.
+// #[derive(PartialEq, Eq, Clone, Debug)]
+// pub struct ListNode {
+//   pub val: i32,
+//   pub next: Option<Box<ListNode>>
+// }
+// 
+// impl ListNode {
+//   #[inline]
+//   fn new(val: i32) -> Self {
+//     ListNode {
+//       next: None,
+//       val
+//     }
+//   }
+// }
+impl Solution {
+    pub fn middle_node(mut head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+        let mut l = 0usize;
+        let mut cout = head.as_ref();
         
-        cur = head
-        i = 0
-        while i < m:
-            i += 1
-            cur = cur.next
-            
-        return cur
+        while let Some(node) = cout {
+            cout = node.next.as_ref();
+            l += 1;
+        }
+        
+        for _ in 0..l/2 {
+            head = head.unwrap().next;
+        }
+        
+        head
+    }
+}
+

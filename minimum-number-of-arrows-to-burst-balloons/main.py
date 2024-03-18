@@ -1,5 +1,3 @@
-from typing import List
-
 class Solution:
     def findMinArrowShots(self, points: List[List[int]]) -> int:
         points.sort()
@@ -20,4 +18,3 @@ class Solution:
                     end = p[1]
         result += 1
         return result
-

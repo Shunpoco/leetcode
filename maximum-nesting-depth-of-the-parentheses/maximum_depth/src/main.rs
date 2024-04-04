@@ -27,8 +27,7 @@ impl Solution {
             if stack.len() == 0 {
                 depth = 0;
             }
-        }
-        
+        }        
         max_depth
     }
 }

@@ -1,26 +1,26 @@
-from typing import Optional
-
 # Definition for a binary tree node.
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
 class Solution:
     def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
-        stack = [(root, False)] # (TreeNode, whether it is left or right)
-        
         result = 0
-        
-        while len(stack) > 0:
-            node, isLeft = stack.pop()
-            
+
+        queue = [(root, False)]
+
+        while queue:
+            node, isLeft = queue.pop(0)
+
             if node.left is None and node.right is None and isLeft:
                 result += node.val
-            else:
-                if node.left:
-                    stack.append((node.left, True))
-                if node.right:
-                    stack.append((node.right, False))
-                    
+
+            if node.left is not None:
+                queue.append((node.left, True))
+
+            if node.right is not None:
+                queue.append((node.right, False))
+
         return result
+

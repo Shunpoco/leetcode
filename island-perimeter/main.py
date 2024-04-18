@@ -7,7 +7,7 @@ class Solution:
                     result += self.nums(grid, (i,j))
                     
         return result
-    
+
     def nums(self, grid, pos) -> int:
         print(pos)
         count = 0

@@ -1,22 +1,27 @@
-from typing import Dict
-
 class Solution:
     def tribonacci(self, n: int) -> int:
-        memory = {0: 0, 1: 1, 2: 1}
+        memo = {}
 
-        self.exec(n, memory)
+        self._tri(n, memo)
 
-        return memory[n]
+        return memo[n]
 
-
-    def exec(self, n: int, memory: Dict[int, int]):
-        if memory.get(n):
+    def _tri(self, n, memo):
+        if memo.get(n) is not None:
             return
 
-        r = 0
-        for i in range(1, 4):
-            if n-i >= 0:
-                self.exec(n-i, memory)
-                r += memory[n-i]
+        if n == 1 or n == 2:
+            memo[n] = 1
+            return
 
-        memory[n] = r
+        if n == 0:
+            memo[0] = 0
+            return
+
+        self._tri(n-3, memo)
+        self._tri(n-2, memo)
+        self._tri(n-1, memo)
+
+        memo[n] = memo[n-3] + memo[n-2] + memo[n-1]
+
+        return

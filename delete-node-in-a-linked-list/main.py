@@ -12,10 +12,12 @@ class Solution:
         """
         cur = node
         nex = cur.next
+
         while nex.next is not None:
             cur.val = nex.val
             cur = nex
             nex = cur.next
-            
+
         cur.val = nex.val
         cur.next = None
+

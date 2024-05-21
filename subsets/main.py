@@ -1,17 +1,17 @@
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        stack = [([], 0)]
-        result = []
-        
-        while len(stack) > 0:
-            v, left = stack.pop(-1)
-            result.append(v)
-            
-            candidates = nums[left:]
+        n = len(nums)
 
-            for i, num in enumerate(candidates):
-                temp = v.copy()
-                temp.append(num)
-                stack.append((temp, left+i+1))
-                
+        result = []
+        for i in range(2**n):
+            t = []
+            for j in range(n):
+                if j > i:
+                    break
+                if (2 ** j) & i > 0:
+                    t.append(nums[j])
+
+            result.append(t)
+
         return result
+

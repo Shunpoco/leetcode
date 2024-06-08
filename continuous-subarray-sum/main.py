@@ -20,5 +20,4 @@ class Solution:
             else:
                 ht[c] = [i]
 
-        # print(ht)
         return False

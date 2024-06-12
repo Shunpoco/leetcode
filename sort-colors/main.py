@@ -3,15 +3,16 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
-        store = [0, 0, 0]
-        
+        memo = {}
+        memo[0] = 0
+        memo[1] = 0
+        memo[2] = 0
         for num in nums:
-            store[num] += 1
-            
-        a = 0
-        for i, s in enumerate(store):
-            if i > 0:
-                a += store[i-1]
+            memo[num] += 1
 
-            for j in range(a, s+a):
-                nums[j] = i
+        i = 0
+        for j in range(3):
+            for _ in range(memo[j]):
+                nums[i] = j
+                i += 1
+

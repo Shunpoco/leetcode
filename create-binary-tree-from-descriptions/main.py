@@ -5,35 +5,34 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def createBinaryTree(self, descs: List[List[int]]) -> Optional[TreeNode]:
-        memory = {}
-        parent = set()
-        child = set()
-        
-        for desc in descs:
-            if memory.get(desc[0]):
-                v = memory[desc[0]]
+    def createBinaryTree(self, descriptions: List[List[int]]) -> Optional[TreeNode]:
+        memo = {}
+
+        for d in descriptions:
+            if memo.get(d[0]) is None:
+                p = TreeNode(val=d[0])
             else:
-                v = TreeNode(desc[0])
-                memory[desc[0]] = v
-                
-            if memory.get(desc[1]):
-                c = memory[desc[1]]
-            else:          
-                c = TreeNode(desc[1])
-                memory[desc[1]] = c
+                p = memo[d[0]][0]
 
-            if desc[2] == 1:
-                v.left = c
+            if memo.get(d[1]) is None:
+                c = TreeNode(val=d[1])
             else:
-                v.right = c
+                c = memo[d[1]][0]
 
-            parent.add(desc[0])
-            child.add(desc[1])
-        
-        root = list(parent-child)[0]
-        
-        # print(memory)
-        # print(root)
+            if d[2] == 1:
+                p.left = c
+            else:
+                p.right = c
 
-        return memory[root]
+            memo[d[1]] = [c, p]
+
+            if memo.get(d[0]) is not None:
+                memo[d[0]] = [p, memo[d[0]][1]]
+            else:
+                memo[d[0]] = [p, None]
+
+        for _, v in memo.items():
+            if v[1] is None:
+                return v[0]
+        
+        return None

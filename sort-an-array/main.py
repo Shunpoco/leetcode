@@ -1,28 +1,45 @@
-from typing import List
-
 class Solution:
     def sortArray(self, nums: List[int]) -> List[int]:
-        return self.exec(nums)
+        self.sort(nums, 0, len(nums))
 
-    def exec(self, nums: List[int]) -> List[int]:
-        if len(nums) <= 1:
-            return nums
+        return nums
 
-        m = len(nums) // 2
-        n1 = self.exec(nums[:m])
-        n2 = self.exec(nums[m:])
+    def sort(self, nums, left, right):
+        if right-left == 1:
+            return
 
-        r = []
-        while len(n1) > 0 and len(n2) > 0:
-            if n1[0] < n2[0]:
-                r.append(n1.pop(0))
+        if right-left == 2:
+            if nums[left] > nums[left+1]:
+                t = nums[left]
+                nums[left] = nums[left+1]
+                nums[left+1] = t
+
+            return
+
+        m = (left+right) // 2
+
+        self.sort(nums, left, m)
+        self.sort(nums, m, right)
+
+        q = []
+        i = left
+        j = m
+
+        while i < m or j < right:
+            if i == m:
+                q.append(nums[j])
+                j += 1
+            elif j == right:
+                q.append(nums[i])
+                i += 1
             else:
-                r.append(n2.pop(0))
+                if nums[i] < nums[j]:
+                    q.append(nums[i])
+                    i += 1
+                else:
+                    q.append(nums[j])
+                    j += 1
+        for i in range(len(q)):
+            nums[left+i] = q[i]
 
-        if len(n1) > 0:
-            r.extend(n1)
-        elif len(n2) > 0:
-            r.extend(n2)
-
-        return r
-
+        return

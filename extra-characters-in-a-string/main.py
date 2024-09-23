@@ -1,34 +1,34 @@
-from typing import List
-
 class Solution:
     def minExtraChar(self, s: str, dictionary: List[str]) -> int:
+        memo = defaultdict(list)
+
+        for word in dictionary:
+            memo[word[0]].append(word)
+
         dp = [-1 for _ in range(len(s)+1)]
-        dp[len(s)] = 0
 
-        def exec(idx: int):
-            if dp[idx] != -1:
-                return
-
-            r = 100000
-            for start in range(idx, len(s)):
-                for end in range(len(s), start, -1):
-                    pref = start - idx
-                    v = s[start:end]
-
-                    if v in dictionary:
-                        exec(end)
-                        if pref + dp[end] < r:
-                            r = pref + dp[end]
-
-                    else:
-                        exec(end)
-                        t = end - start + dp[end]
-                        if pref + t < r:
-                            r = pref + t
-
-            dp[idx] = r
-
-        exec(0)
+        self.calc(s, 0, memo, dp)
 
         return dp[0]
 
+    def calc(self, s, idx, memo, dp):
+        if idx >= len(s):
+            dp[idx] = 0
+            return
+
+        if dp[idx] != -1:
+            return
+
+        self.calc(s, idx+1, memo, dp)
+        result = 1 + dp[idx+1]
+
+        for word in memo[s[idx]]:
+            if s[idx:idx+len(word)] == word:
+                self.calc(s, idx+len(word), memo, dp)
+                t = dp[idx+len(word)]
+                if t < result:
+                    result = t
+
+        dp[idx] = result
+
+        return

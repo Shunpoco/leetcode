@@ -1,14 +1,22 @@
+class LinkedList:
+    def __init__(self, value: int, n=None):
+        self.value = value
+        self.next = n
+
 class MyCircularDeque:
 
     def __init__(self, k: int):
         self.max = k
-        self.q = []
+        self.l = 0
+        self.root = None
 
     def insertFront(self, value: int) -> bool:
         if self.isFull():
             return False
 
-        self.q.insert(0, value)
+        nr = LinkedList(value, self.root)
+        self.root = nr
+        self.l += 1
 
         return True
 
@@ -16,16 +24,27 @@ class MyCircularDeque:
         if self.isFull():
             return False
 
-        self.q.append(value)
+        if self.root is None:
+            self.root = LinkedList(value)
+            self.l = 1
+
+            return True
+
+        cur = self.root
+        while cur.next is not None:
+            cur = cur.next
+
+        cur.next = LinkedList(value)
+        self.l += 1
 
         return True
-
 
     def deleteFront(self) -> bool:
         if self.isEmpty():
             return False
 
-        self.q.pop(0)
+        self.root = self.root.next
+        self.l -= 1
 
         return True
 
@@ -33,7 +52,18 @@ class MyCircularDeque:
         if self.isEmpty():
             return False
 
-        self.q.pop(-1)
+        cur = self.root
+        if cur.next is None:
+            self.root = None
+            self.l = 0
+
+            return True
+
+        while cur.next.next is not None:
+            cur = cur.next
+
+        cur.next = None
+        self.l -= 1
 
         return True
 
@@ -41,19 +71,23 @@ class MyCircularDeque:
         if self.isEmpty():
             return -1
 
-        return self.q[0]
+        return self.root.value        
 
     def getRear(self) -> int:
         if self.isEmpty():
             return -1
 
-        return self.q[-1]
+        cur = self.root
+        while cur.next is not None:
+            cur = cur.next
+
+        return cur.value
 
     def isEmpty(self) -> bool:
-        return len(self.q) == 0
+        return self.l == 0
 
     def isFull(self) -> bool:
-        return len(self.q) == self.max
+        return self.l == self.max
 
 
 # Your MyCircularDeque object will be instantiated and called as such:

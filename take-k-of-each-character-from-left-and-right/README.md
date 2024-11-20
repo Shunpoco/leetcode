@@ -1,0 +1,2 @@
+## Take k of each character from left and right
+https://leetcode.com/problems/take-k-of-each-character-from-left-and-right

@@ -1,34 +1,27 @@
-from typing import List
-
 class Solution:
     def mincostTickets(self, days: List[int], costs: List[int]) -> int:
-        nd = len(days)
-        memo = [-1 for _ in range(nd)]
+        memo = [-1 for _ in range(days[-1]+1)]
+        needs = {}
+        for day in days:
+            needs[day] = True
 
-        def exec(idx: int) -> int:
-            if idx >= nd:
-                return 0
+        return self.dp(memo, needs, 1, days, costs)
 
-            if memo[idx] != -1:
-                return memo[idx]
-            
-            v1 = costs[0] + exec(idx+1)
-            v2 = costs[1]
-            d = 0
-            while idx+d < nd and days[idx+d] < days[idx] + 7:
-                d += 1
-            v2 += exec(idx+d)
+    def dp(self, memo, needs, cur, days, costs):
+        if cur > days[-1]:
+            return 0
 
-            v3 = costs[2]
-            d = 0
-            while idx+d < nd and days[idx+d] < days[idx] + 30:
-                d += 1
-            v3 += exec(idx+d)
+        if needs.get(cur) is None:
+            return self.dp(memo, needs, cur+1, days, costs)
 
-            v = min(v1, v2, v3)
-            memo[idx] = v
+        if memo[cur] != -1:
+            return memo[cur]
 
-            return v
+        od = costs[0] + self.dp(memo, needs, cur+1, days, costs)
+        sd = costs[1] + self.dp(memo, needs, cur+7, days, costs)
+        md = costs[2] + self.dp(memo, needs, cur+30, days, costs)
 
-        return exec(0)
+        memo[cur] = min([od, sd, md])
+
+        return memo[cur]
 

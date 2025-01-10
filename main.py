@@ -1,18 +1,22 @@
 class Solution:
-    def countGoodStrings(self, low: int, high: int, zero: int, one: int) -> int:
-        memo = [0 for _ in range(high+1)]
-        memo[0] = 1
+    def wordSubsets(self, words1: List[str], words2: List[str]) -> List[str]:
+        def count(word):
+            r = [0] * 26
+            for c in word:
+                r[ord(c)-ord('a')] += 1
 
-        MOD = 10 ** 9 + 7
+            return r
 
-        for i in range(1, high+1):
-            if i >= zero:
-                memo[i] += memo[i-zero]
+        bs = [0]*26
+        for word2 in words2:
+            for i, c in enumerate(count(word2)):
+                bs[i] = max(bs[i], c)
 
-            if i >= one:
-                memo[i] += memo[i-one]
+        result = []
 
-            memo[i] %= MOD
+        for word1 in words1:
+            if all(x >= y for x, y in zip(count(word1), bs)):
+                result.append(word1)
 
-        return sum(memo[low:high+1]) % MOD
+        return result
 

@@ -3,3 +3,5 @@
 https://leetcode.com/problems/count-ways-to-build-good-strings/description/
 ## Word subsets
 https://leetcode.com/problems/word-subsets/description/
+## Minimum number of operations to make elements in array distinct
+https://leetcode.com/problems/minimum-number-of-operations-to-make-elements-in-array-distinct

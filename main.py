@@ -1,22 +1,24 @@
 class Solution:
-    def wordSubsets(self, words1: List[str], words2: List[str]) -> List[str]:
-        def count(word):
-            r = [0] * 26
-            for c in word:
-                r[ord(c)-ord('a')] += 1
+    def minimumOperations(self, nums: List[int]) -> int:
+        memo = defaultdict(int)
 
-            return r
+        for num in nums:
+            memo[num] += 1
 
-        bs = [0]*26
-        for word2 in words2:
-            for i, c in enumerate(count(word2)):
-                bs[i] = max(bs[i], c)
-
-        result = []
-
-        for word1 in words1:
-            if all(x >= y for x, y in zip(count(word1), bs)):
-                result.append(word1)
+        result = 0
+        while self.isDup(memo):
+            result += 1
+            for i in range(min(3, len(nums))):
+                memo[nums[i]] -= 1
+            
+            nums = nums[3:]
 
         return result
+
+    def isDup(self, memo) -> bool:
+        for _, v in memo.items():
+            if v > 1:
+                return True
+
+        return False
 

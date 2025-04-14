@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "good_triplets"
+name = "count-good-triplets"
 version = "0.1.0"

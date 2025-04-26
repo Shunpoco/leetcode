@@ -1,18 +1,25 @@
-from typing import List
-
 class Solution:
     def answerQueries(self, nums: List[int], queries: List[int]) -> List[int]:
-        nums.sort()
-        result = [0 for _ in range(len(queries))]
+        n = len(nums)
+        m = len(queries)
+        answer = [-1 for _ in range(m)]
 
-        for i, query in enumerate(queries):
-            r = 0
-            for num in nums:
-                if query >= num:
-                    query -= num
-                    r += 1
-                else:
-                    break
+        sums = sum(nums)
 
-            result[i] = r
-        return result
+        pq = []
+        for num in nums:
+            heapq.heappush(pq, -num)
+
+        print(pq)
+
+        for i, q in enumerate(queries):
+            t = sums
+            pq_ = pq.copy()
+
+            while t > q:
+                v = heapq.heappop(pq_)
+                t -= -v
+
+            answer[i] = len(pq_)
+
+        return answer

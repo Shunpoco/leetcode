@@ -1,52 +1,74 @@
-from typing import List
-
 class Solution:
-    MOD = 1000000007
+    MOD = 10 ** 9 + 7
+
     def numTilings(self, n: int) -> int:
-        memo = [[-1 for _ in range(n)] for _ in range(3)] # all, only upper, only lower
 
-        return self.exec(0, n, 0, memo)
+        memo = {}
 
-    def exec(self, idx: int, n: int, f: int, memo: List[List[int]]) -> int:
-        """
-        f takes three values: 0 (all), 1 (only upper), and 2 (only lower)
-        """
-        if idx == n and f == 0:
-            return 1
-        elif idx > n or idx == n and f != 0:
-            return 0
+        self.calc(0, 0, n, memo)
 
-        if memo[f][idx] > 0:
-            return memo[f][idx]
+        return memo[(0, 0)]
 
-        r = 0
-        if f == 0:
-            # Put domino vertical
-            r += self.exec(idx+1, n, 0, memo)
-            r %= self.MOD
-            # Put dominos horizontally
-            r += self.exec(idx+2, n, 0, memo)
-            r %= self.MOD
-            # Put tromino upper side
-            r += self.exec(idx+1, n, 2, memo)
-            r %= self.MOD
-            # Put tromino lower side
-            r += self.exec(idx+1, n, 1, memo)
-            r %= self.MOD
-        elif f == 1:
-            # Put domino
-            r += self.exec(idx+1, n, 2, memo)
-            r %= self.MOD
-            # Put tromino lower side
-            r += self.exec(idx+2, n, 0, memo)
-            r %= self.MOD
-        else:
-            # Put domino
-            r += self.exec(idx+1, n, 1, memo)
-            r %= self.MOD
-            # Put tromino upper side
-            r += self.exec(idx+2, n, 0, memo)
-            r %= self.MOD
+    def calc(self, first, second, n, memo):
+        if memo.get((first, second)):
+            return
 
-        memo[f][idx] = r % self.MOD
-        return r
+        if first > n or second > n:
+            memo[(first, second)] = 0
+            return
+
+        if first == second and first == n:
+            memo[(first, second)] = 1
+            return
+
+        result = 0
+
+        if first == second:
+            # 1. domino horizontally
+            self.calc(first+2, second+2, n, memo)
+
+            result += memo[(first+2, second+2)]
+            result %= self.MOD
+
+            # 2. Put domino vertically
+            self.calc(first+1, second+1, n, memo)
+
+            result += memo[(first+1, second+1)]
+            result %= self.MOD
+
+            # 3. Put Tromino
+            self.calc(first+2, second+1, n, memo)
+            self.calc(first+1, second+2, n, memo)
+
+            result += memo[(first+2, second+1)]
+            result %= self.MOD
+
+            result += memo[(first+1, second+2)]
+            result %= self.MOD
+
+        elif first == second+1:
+            # 1. Put domino
+            self.calc(first, second+2, n, memo)
+            result += memo[(first, second+2)]
+            result %= self.MOD
+
+            # 2. Put Tromino
+            self.calc(first+1, second+2, n, memo)
+            result += memo[(first+1, second+2)]
+            result %= self.MOD
+
+        elif first+1 == second:
+            # 1. Put domino
+            self.calc(first+2, second, n, memo)
+            result += memo[(first+2, second)]
+            result %= self.MOD
+
+            # 2. Put Tromino
+            self.calc(first+2, second+1, n, memo)
+            result += memo[(first+2, second+1)]
+            result %= self.MOD
+
+        memo[(first, second)] = result
+
+        return
+

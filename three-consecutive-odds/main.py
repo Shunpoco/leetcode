@@ -1,13 +1,19 @@
 class Solution:
     def threeConsecutiveOdds(self, arr: List[int]) -> bool:
-        c = 0
-        for a in arr:
-            if a % 2 != 0:
-                c += 1
-            else:
-                c = 0
+        leftOdd = 0
+        rightOdd = 0
 
-            if c == 3:
-                return True
+        while rightOdd < len(arr):
+            if arr[rightOdd] % 2 != 0:
+                rightOdd += 1
+
+                if rightOdd - leftOdd == 3:
+                    return True
+
+            else:
+                leftOdd = rightOdd + 1
+                rightOdd = leftOdd
 
         return False
+            
+

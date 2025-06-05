@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 class Solution:
     def smallestEquivalentString(self, s1: str, s2: str, baseStr: str) -> str:
         memo = defaultdict(set)
@@ -26,8 +24,8 @@ class Solution:
                             fixed[ord(v)-ord('a')] = True
                     memo[c] = set([c])
 
-        r = ""
+        result = ""
         for c in baseStr:
-            r += list(memo[c])[0]
+            result += list(memo[c])[0]
 
-        return r
+        return result

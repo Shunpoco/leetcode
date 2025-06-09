@@ -4,24 +4,23 @@ class Solution:
         k -= 1
 
         while k > 0:
-            c = self.count(n, cur, cur+1)
+            step = self.calc(n, cur, cur+1)
 
-            if c <= k:
-                k -= c
+            if step <= k:
                 cur += 1
-
+                k -= step
             else:
-                k -= 1
                 cur *= 10
+                k -= 1
 
         return cur
 
-    def count(self, n, p1, p2):
-        c = 0
+    def calc(self, n, p1, p2):
+        steps = 0
 
         while p1 <= n:
-            c += min(p2, n+1) - p1
+            steps += min(n+1, p2) - p1
             p1 *= 10
             p2 *= 10
 
-        return c
+        return steps

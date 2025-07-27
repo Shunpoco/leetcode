@@ -1,24 +1,33 @@
+
 class Solution:
-    def minimumOperations(self, nums: List[int]) -> int:
-        memo = defaultdict(int)
-
-        for num in nums:
-            memo[num] += 1
-
+    def countHillValley(self, nums: List[int]) -> int:
         result = 0
-        while self.isDup(memo):
-            result += 1
-            for i in range(min(3, len(nums))):
-                memo[nums[i]] -= 1
+        n = len(nums)
+
+        for i in range(1, n-1):
+            if nums[i] == nums[i-1]:
+                continue
+            l = 0
+            for j in range(i-1, -1, -1):
+                if nums[j] > nums[i]:
+                    l = 1
+                    break
+                elif nums[j] < nums[i]:
+                    l = -1
+                    break
             
-            nums = nums[3:]
+            r = 0
+            for j in range(i+1, n):
+                if nums[j] > nums[i]:
+                    r = 1
+                    break
+                elif nums[j] < nums[i]:
+                    r = -1
+                    break
+
+            if l == r and l != 0:
+                result += 1
 
         return result
 
-    def isDup(self, memo) -> bool:
-        for _, v in memo.items():
-            if v > 1:
-                return True
-
-        return False
 

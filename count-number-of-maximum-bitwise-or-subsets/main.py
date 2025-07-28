@@ -1,3 +1,4 @@
+
 class Solution:
     def countMaxOrSubsets(self, nums: List[int]) -> int:
         m = 0
@@ -24,7 +25,7 @@ class Solution:
             dp[(idx, t)] = pow(2, len(nums)-1-idx)
             return
 
-        
+
         r = 0
         for i in range(idx+1, len(nums)):
             self.calc(i, cur, nums, target, dp)
@@ -33,4 +34,4 @@ class Solution:
 
         dp[(idx, t)] = r
 
-        return
+

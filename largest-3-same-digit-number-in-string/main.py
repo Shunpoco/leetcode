@@ -1,20 +1,23 @@
 class Solution:
     def largestGoodInteger(self, num: str) -> str:
-        result = ""
+        result = -1
 
-        cur = ""
         count = 0
-
-        for n in num:
-            if cur == n:
-                count += 1
-            else:
-                cur = n
+        prev = 
+        for c in num:
+            if prev != c:
                 count = 1
+                prev = c
+            else:
+                count += 1
 
             if count == 3:
-                t = n + n + n
-                if result < t:
-                    result = t
+                v = int(c)
+                if v > result:
+                    result = v
 
-        return result
+        if result == -1:
+            return 
+
+        return f{result}{result}{result}
+
